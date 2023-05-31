@@ -56,6 +56,7 @@ const styles = {
     alignItems: 'start',
     justifyContent: 'space-between',
     height: '70vh',
+    marginLeft: '100px',
   },
   link: {
     display: 'flex',
