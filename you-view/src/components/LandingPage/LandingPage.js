@@ -1,5 +1,5 @@
 import React from 'react';
-import LandingPageHeader from './LandingPageHeader';
+import LandingPageHeader from '../LandingPageHeader/LandingPageHeader';
 import './LandingPage.module.css';
 
 const LandingPage = () => {
