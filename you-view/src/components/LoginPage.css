@@ -1,0 +1,80 @@
+.loginPage {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .leftSection {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .rightSection {
+    background-color: #e5e5e5;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .formContainer {
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  .inputField {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid gray;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: none;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContent {
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .modalCloseButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+  }
