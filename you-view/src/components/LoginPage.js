@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { GoogleButton } from 'react-google-button';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -62,40 +61,6 @@ const LoginPage = () => {
     handleModalClose();
   };
 
-  useEffect(() => {
-    const initGoogleAuth = async () => {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.appendChild(script);
-      });
-
-      window.google.accounts.id.initialize({
-        client_id: '75847156363-hi9d3bir3bc64nu4ioee8rvl0pehi2ft.apps.googleusercontent.com',
-        callback: handleGoogleResponse,
-      });
-    };
-
-    initGoogleAuth();
-  }, []);
-
-  const handleGoogleResponse = (response) => {
-    if (response.credential) {
-      // Handle successful Google Identity Services login
-      console.log('Google Identity Services login success:', response);
-      // navigate(''); // Replace '/home' with the path to your home page
-    } else {
-      // Handle failed Google Identity Services login
-      console.log('Google Identity Services login failure:', response);
-    }
-  };
-
-  const handleGoogleFailure = (error) => {
-    console.log('Google login failure:', error);
-  };
-
   return (
     <div className="loginPage">
       <div className="leftSection">
@@ -128,14 +93,6 @@ const LoginPage = () => {
             <button className="button" onClick={handleSignup}>
               Sign Up
             </button>
-            {/* <GoogleButton
-              onClick={() =>
-                window.google.accounts.id.prompt(
-                  { client_id: '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', callback: handleGoogleResponse },
-                  handleGoogleFailure
-                )
-              }
-            /> */}
           </form>
         </div>
       </div>
