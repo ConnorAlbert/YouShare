@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleButton } from 'react-google-button';
+// import { GoogleButton } from 'react-google-button';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -128,14 +128,14 @@ const LoginPage = () => {
             <button className="button" onClick={handleSignup}>
               Sign Up
             </button>
-            <GoogleButton
+            {/* <GoogleButton
               onClick={() =>
                 window.google.accounts.id.prompt(
                   { client_id: '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', callback: handleGoogleResponse },
                   handleGoogleFailure
                 )
               }
-            />
+            /> */}
           </form>
         </div>
       </div>
