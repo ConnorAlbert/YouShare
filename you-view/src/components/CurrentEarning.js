@@ -142,7 +142,7 @@ const CurrentEarning = () => {
                 onClick={() => handleTabClick(false)}
               >
                 <Typography variant="subtitle1" style={styles.tabText}>
-                  Currently Content
+                  Current Content
                 </Typography>
               </div>
               <div
