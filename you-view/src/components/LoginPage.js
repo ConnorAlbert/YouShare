@@ -97,7 +97,7 @@ const LoginPage = () => {
               value={password}
               onChange={handlePasswordChange}
             />
-            <button className="button login"><img src={lockImage} alt="Lock" className="buttonIcon" /><b>Log in</b></button>
+            <button className="button login" onClick={handleLoginAttempt}><img src={lockImage} alt="Lock" className="buttonIcon" /><b>Log in</b></button>
             <p>
               <span className="link" onClick={handleResetPassword}>
                 Forgot Password?
