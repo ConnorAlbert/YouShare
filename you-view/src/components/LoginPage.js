@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+// import { GoogleButton } from 'react-google-button';
 import './LoginPage.css';
 
+
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
@@ -32,6 +37,11 @@ const LoginPage = () => {
     setResetEmail('');
     setSignupEmail('');
     setSignupPassword('');
+  };
+
+  const handleLoginAttempt = () => {
+    navigate("/home"); 
+
   };
 
   const handleResetSubmit = (event) => {
@@ -84,7 +94,7 @@ const LoginPage = () => {
               value={password}
               onChange={handlePasswordChange}
             />
-            <button className="button">Login</button>
+            <button className="button" onClick={handleLoginAttempt}>Login</button>
             <p>
               <span className="link" onClick={handleResetPassword}>
                 Reset Password
