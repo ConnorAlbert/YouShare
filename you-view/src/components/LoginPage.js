@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+// import { GoogleButton } from 'react-google-button';
 import './LoginPage.css';
 import lockImage from '../assets/Images/Lock.png';
 
+
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
@@ -33,6 +38,11 @@ const LoginPage = () => {
     setResetEmail('');
     setSignupEmail('');
     setSignupPassword('');
+  };
+
+  const handleLoginAttempt = () => {
+    navigate("/home"); 
+
   };
 
   const handleResetSubmit = (event) => {
