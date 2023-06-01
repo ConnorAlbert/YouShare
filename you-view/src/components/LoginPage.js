@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LoginPage.css';
+import lockImage from '../assets/Images/Lock.png';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -37,7 +38,7 @@ const LoginPage = () => {
   const handleResetSubmit = (event) => {
     event.preventDefault();
     // Handle password reset logic using the resetEmail value
-    console.log('Reset password for email:', resetEmail);
+    console.log('Forgot password? for email:', resetEmail);
     handleModalClose();
   };
 
@@ -68,8 +69,9 @@ const LoginPage = () => {
       </div>
       <div className="rightSection">
         <div className="formContainer">
-          <h2>Login</h2>
+          <h1>Log in</h1>
           <form>
+            <p className='Username'>Username</p>
             <input
               type="text"
               placeholder="Username"
@@ -77,6 +79,7 @@ const LoginPage = () => {
               value={username}
               onChange={handleUsernameChange}
             />
+            <p className='Password'>Password</p>
             <input
               type="password"
               placeholder="Password"
@@ -84,13 +87,13 @@ const LoginPage = () => {
               value={password}
               onChange={handlePasswordChange}
             />
-            <button className="button">Login</button>
+            <button className="button login"><img src={lockImage} alt="Lock" className="buttonIcon" /><b>Log in</b></button>
             <p>
               <span className="link" onClick={handleResetPassword}>
-                Reset Password
+                Forgot Password?
               </span>
             </p>
-            <button className="button" onClick={handleSignup}>
+            <button className="button signupbutton" onClick={handleSignup}>
               Sign Up
             </button>
           </form>
@@ -103,7 +106,7 @@ const LoginPage = () => {
             <span className="modalCloseButton" onClick={handleModalClose}>
               &times;
             </span>
-            <h2>Reset Password</h2>
+            <h2>Forgot Password?</h2>
             <form onSubmit={handleResetSubmit}>
               <input
                 type="email"
@@ -112,7 +115,7 @@ const LoginPage = () => {
                 value={resetEmail}
                 onChange={handleResetEmailChange}
               />
-              <button className="button">Reset</button>
+              <button className="button signupbutton">Reset</button>
             </form>
           </div>
         </div>
@@ -129,22 +132,23 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="Email"
-                className="inputField"
+                className="inputField email"
                 value={signupEmail}
                 onChange={handleSignupEmailChange}
               />
               <input
                 type="password"
                 placeholder="Password"
-                className="inputField"
+                className="inputField password"
                 value={signupPassword}
                 onChange={handleSignupPasswordChange}
               />
-              <button className="button">Sign Up</button>
+              <button className="button signupbutton signupmodal">Sign Up</button>
             </form>
           </div>
         </div>
       )}
+
     </div>
   );
 };

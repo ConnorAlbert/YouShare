@@ -1,80 +1,144 @@
 .loginPage {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .leftSection {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .rightSection {
-    background-color: #e5e5e5;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .formContainer {
-    max-width: 400px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-  }
-  
-  .inputField {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 3px;
-    border: 1px solid gray;
-  }
-  
-  .button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 3px;
-    border: none;
-    background-color: blue;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .link {
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modalContent {
-    width: 400px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    position: relative;
-  }
-  
-  .modalCloseButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 24px;
-  }
+  display: flex;
+  height: 100vh;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.leftSection {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rightSection {
+  background-color: #e5e5e5;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 auto;
+}
+
+.formContainer {
+  width: 30%;
+  padding: 20px;
+  border-radius: 5px;
+  height: 60%;
+}
+
+.inputField {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 15px;
+  border: 2px solid rgb(3, 3, 3);
+  background-color: #e5e5e5;
+  margin-bottom: 0px;
+  box-sizing: border-box; 
+}
+
+.button {
+  width: 100%;
+  padding: 8px;
+  font-size: 18px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.link {
+  color: #1e1d80;
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  width: 400px;
+  padding: 20px;
+  background-color: #e5e5e5;
+  border-radius: 5px;
+  position: relative;
+  align-items: center;
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #1e1d80; /* Set the color to match the site's theme */
+}
+
+h1 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.Username, .Password {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.login {
+  margin-top: 30px;
+  background-color: #242f40;
+  border-radius: 15px;
+}
+
+.signupbutton {
+  width: 65%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background-color: #1e1d80;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+
+.buttonIcon {
+  width: 14px; 
+  height: 14px; 
+  margin-right: 8px; 
+}
+
+h2 {
+  justify-content: center;
+  display: flex;
+}
+
+.signupmodal {
+  margin-top: 0
+}
+
+.email, .password {
+  margin-bottom: 20px;
+}
