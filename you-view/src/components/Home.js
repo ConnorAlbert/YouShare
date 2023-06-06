@@ -1,5 +1,6 @@
 import React from 'react';
 import CurrentEarning from './CurrentEarning';
+import Header from './Header'; // Add the import for Header component here
 
 const styles = {
   container: {
@@ -23,6 +24,7 @@ const Home = () => {
         <CurrentEarning />
       </div>
       <div style={styles.mainContent}>
+        <Header />
         <h1>Welcome to Home!</h1>
         {/* Rest of your Home content goes here */}
       </div>
