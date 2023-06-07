@@ -27,7 +27,7 @@ const styles = {
     cursor: 'pointer',
   },
   icon: {
-    fontSize: '8rem',
+    fontSize: '5rem',
   },
   expBar: {
     width: '90%',
@@ -58,6 +58,10 @@ const styles = {
     backgroundColor: '#363636',
     transition: 'transform 0.3s ease-in-out',
   },
+  profileName: {
+    fontSize: '1.5rem',
+    paddingBottom: '20px',
+  },
 };
 
 const Header = ({ level, xp }) => {
@@ -74,6 +78,7 @@ const Header = ({ level, xp }) => {
           <HeaderContent />
           <div style={styles.profile} onClick={toggleSidebar}>
             <AccountCircleIcon style={styles.icon} />
+            <div style={styles.profileName}>Profile</div>
             {!sidebarOpen && (
               <div style={styles.expBar}>
                 <span style={styles.expLevel}>🔥{level}</span>

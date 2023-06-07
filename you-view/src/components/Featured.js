@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { padding } from '@mui/system';
 
 const styles = {
   icon: {
