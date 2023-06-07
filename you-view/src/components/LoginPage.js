@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// import { GoogleButton } from 'react-google-button';
+import { useMutation, gql } from '@apollo/client';
 import './LoginPage.css';
-
+import lockImage from '../assets/Images/Lock.png';
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -40,15 +41,51 @@ const LoginPage = () => {
     setSignupPassword('');
   };
 
-  const handleLoginAttempt = () => {
-    navigate("/home"); 
+  const LOGIN_MUTATION = gql`
+    mutation Login($email: String!, $password: String!) {
+      login(email: $email, password: $password) {
+        message
+      }
+    }
+  `;
 
+  const SIGNUP_MUTATION = gql`
+    mutation Signup($email: String!, $password: String!) {
+      createUser(email: $email, password: $password) {
+        email
+      }
+    }
+  `;
+
+  const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION);
+  const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION);
+
+  const handleLoginAttempt = async () => {
+    try {
+      const { data } = await login({
+        variables: {
+          email,
+          password,
+        },
+      });
+
+      if (data.login.message === 'Login successful') {
+        setSuccessMessage('Login successful!');
+        // Save the token to local storage or a state management system
+        navigate('/home'); // Redirect the user to the home page
+      } else {
+        setErrorMessage(data.login.message);
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred during login. Please try again.');
+      console.error(error);
+    }
   };
 
   const handleResetSubmit = (event) => {
     event.preventDefault();
     // Handle password reset logic using the resetEmail value
-    console.log('Reset password for email:', resetEmail);
+    console.log('Forgot password? for email:', resetEmail);
     handleModalClose();
   };
 
@@ -65,45 +102,35 @@ const LoginPage = () => {
     setSignupPassword(event.target.value);
   };
 
-  const handleSignupSubmit = (event) => {
+  const handleSignupSubmit = async (event) => {
     event.preventDefault();
-    // Handle signup logic using the signupEmail and signupPassword values
-    console.log('Signup with email:', signupEmail);
+    try {
+      const { data } = await signup({
+        variables: {
+          email: signupEmail,
+          password: signupPassword,
+        },
+      });
+
+      if (data.createUser.email) {
+        setSuccessMessage('Signup successful!');
+        // Save the token to local storage or a state management system
+        // Redirect the user to the desired page, e.g., navigate("/home");
+        navigate('/home');
+      } else {
+        setErrorMessage('An error occurred during signup. Please try again.');
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred during signup. Please try again.');
+      console.error(error);
+    }
+
     handleModalClose();
   };
 
-  useEffect(() => {
-    const initGoogleAuth = async () => {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.appendChild(script);
-      });
-
-      window.google.accounts.id.initialize({
-        client_id: '75847156363-hi9d3bir3bc64nu4ioee8rvl0pehi2ft.apps.googleusercontent.com',
-        callback: handleGoogleResponse,
-      });
-    };
-
-    initGoogleAuth();
-  }, []);
-
-  const handleGoogleResponse = (response) => {
-    if (response.credential) {
-      // Handle successful Google Identity Services login
-      console.log('Google Identity Services login success:', response);
-      // navigate(''); // Replace '/home' with the path to your home page
-    } else {
-      // Handle failed Google Identity Services login
-      console.log('Google Identity Services login failure:', response);
-    }
-  };
-
-  const handleGoogleFailure = (error) => {
-    console.log('Google login failure:', error);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleLoginAttempt();
   };
 
   return (
@@ -113,15 +140,33 @@ const LoginPage = () => {
       </div>
       <div className="rightSection">
         <div className="formContainer">
-          <h2>Login</h2>
-          <form>
+          <h1>Log in</h1>
+          {successMessage && (
+            <p className="successMessage">
+              {successMessage}
+              <span className="closePopup" onClick={() => setSuccessMessage('')}>
+                &times;
+              </span>
+            </p>
+          )}
+          {errorMessage && (
+            <p className="errorMessage">
+              {errorMessage}
+              <span className="closePopup" onClick={() => setErrorMessage('')}>
+                &times;
+              </span>
+            </p>
+          )}
+          <form onSubmit={handleSubmit}>
+            <p className="Username">Email</p>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Email"
               className="inputField"
-              value={username}
-              onChange={handleUsernameChange}
+              value={email}
+              onChange={handleEmailChange}
             />
+            <p className="Password">Password</p>
             <input
               type="password"
               placeholder="Password"
@@ -129,24 +174,19 @@ const LoginPage = () => {
               value={password}
               onChange={handlePasswordChange}
             />
-            <button className="button" onClick={handleLoginAttempt}>Login</button>
+            <button type="submit" className="button login">
+              <img src={lockImage} alt="Lock" className="buttonIcon" />
+              <b>Log in</b>
+            </button>
             <p>
               <span className="link" onClick={handleResetPassword}>
-                Reset Password
+                Forgot Password?
               </span>
             </p>
-            <button className="button" onClick={handleSignup}>
-              Sign Up
-            </button>
-            {/* <GoogleButton
-              onClick={() =>
-                window.google.accounts.id.prompt(
-                  { client_id: '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', callback: handleGoogleResponse },
-                  handleGoogleFailure
-                )
-              }
-            /> */}
           </form>
+          <button className="button signupbutton" onClick={handleSignup}>
+            Sign Up
+          </button>
         </div>
       </div>
 
@@ -156,7 +196,7 @@ const LoginPage = () => {
             <span className="modalCloseButton" onClick={handleModalClose}>
               &times;
             </span>
-            <h2>Reset Password</h2>
+            <h2>Forgot Password?</h2>
             <form onSubmit={handleResetSubmit}>
               <input
                 type="email"
@@ -165,7 +205,7 @@ const LoginPage = () => {
                 value={resetEmail}
                 onChange={handleResetEmailChange}
               />
-              <button className="button">Reset</button>
+              <button className="button signupbutton">Reset</button>
             </form>
           </div>
         </div>
@@ -182,18 +222,23 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="Email"
-                className="inputField"
+                className="inputField email"
                 value={signupEmail}
                 onChange={handleSignupEmailChange}
               />
               <input
                 type="password"
                 placeholder="Password"
-                className="inputField"
+                className="inputField password"
                 value={signupPassword}
                 onChange={handleSignupPasswordChange}
               />
-              <button className="button">Sign Up</button>
+              <button
+                className="button signupbutton signupmodal"
+                disabled={signupLoading}
+              >
+                {signupLoading ? 'Signing up...' : 'Sign Up'}
+              </button>
             </form>
           </div>
         </div>
