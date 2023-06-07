@@ -55,7 +55,7 @@ const Featured = () => {
 
         {/* Right Section */}
         <div style={{ width: '22.5%', marginLeft: '10px', padding: '20px' }}>
-          <div style={{ backgroundColor: '#242F40', marginBottom: '25px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ backgroundColor: '#242F40', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '30px' }}>
             <h2 style={{ color: 'white', textAlign: 'center' }}>Multiply your Earning</h2>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }} onClick={() => handleCheckboxChange('like')}>
               <label
