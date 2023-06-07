@@ -5,7 +5,7 @@ import HeaderContent from '../components/HeaderContent'
 
 const styles = {
   header: {
-    backgroundColor: '#3D4D57',
+    backgroundColor: '#242F40',
     minHeight: '10vh',
     display: 'flex',
     flexDirection: 'row',
@@ -53,56 +53,25 @@ const styles = {
   sidebar: {
     position: 'fixed',
     right: '0',
-    width: '14.2%', // Match the width of the profile box
+    width: '13.9%', // Match the width of the profile box
     height: '100vh', // Full height
     backgroundColor: '#363636',
     transition: 'transform 0.3s ease-in-out',
   },
 };
 
-const Header = () => {
-  const [xp, setXp] = useState(0);
-  const [level, setLevel] = useState(0);
+const Header = ({ level, xp }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const sidebarRef = useRef(null);
-
-  useEffect(() => {
-    if (xp >= 100) {
-      setTimeout(() => {
-        setLevel(prevLevel => prevLevel + 1);
-        setXp(0);
-      }, 500);
-    }
-  }, [xp]);
-
-  const addXp = () => {
-    const addedXp = Math.floor(Math.random() * 20) + 13;
-    setXp(prevXp => prevXp + addedXp);
-  };
 
   const toggleSidebar = () => {
     setSidebarOpen(prevSidebarOpen => !prevSidebarOpen);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        setSidebarOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleOutsideClick);
-
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, []);
-
   return (
     <>
       <header style={styles.header}>
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-            <HeaderContent onClick = {addXp} />
+          <HeaderContent />
           <div style={styles.profile} onClick={toggleSidebar}>
             <AccountCircleIcon style={styles.icon} />
             {!sidebarOpen && (
@@ -116,11 +85,12 @@ const Header = () => {
         </div>
       </header>
       {/* Sidebar */}
-      <div style={{ ...styles.sidebar, transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)' }} ref={sidebarRef}>
-        <SidebarContent level={level} xp={xp}/>
+      <div style={{ ...styles.sidebar, transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)' }}>
+        <SidebarContent level={level} xp={xp} />
       </div>
     </>
   );
 };
+
 
 export default Header;

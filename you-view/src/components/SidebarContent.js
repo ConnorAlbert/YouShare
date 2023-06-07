@@ -100,7 +100,7 @@ const SidebarContent = ({ level, xp }) => {
           <span style={styles.levelEmoji}>
             <span style={styles.levelLabel}>Level:</span>🔥{level}
           </span>
-          <span style={{ margin: '0 20px', color: 'white' }}>XP: {xp}/100</span>
+          <span style={{ margin: '0 20px', color: 'white' }}>XP: {xp.toFixed(1)}/100</span>
         </h3>
 
         <div style={styles.xpBar}>

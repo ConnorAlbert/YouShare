@@ -1,9 +1,9 @@
 import React from 'react';
 
-const HeaderContent = ({ onClick }) => {
+const HeaderContent = () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 'auto' }}>
-        <h1 style={{ marginBottom: '10px' }} onClick= {onClick}>YouShare</h1>
+        <h1 style={{ marginBottom: '10px' }}>YouShare</h1>
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '200px' }}>
           <div style={{ flex: '1', marginRight: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50px', backgroundColor: 'red' }}>
