@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-
 const styles = {
   container: {
     display: 'flex',
@@ -40,13 +39,14 @@ const styles = {
   },
   videoPreview: {
     marginTop: '16px',
-    width: '100%',
+    marginBottom: '16px',
+    width: '90%',
     height: '200px',
-    backgroundColor: 'lightgray',
+    margin: 'auto',
   },
   replaceText: {
     marginTop: '16px',
-    color: '#e5e5e5',
+    color: '#blue',
     textAlign: 'center',
   },
   tileContainer: {
@@ -119,13 +119,37 @@ const styles = {
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  replaceButton: {
+    marginTop: '16px',
+    marginBottom: '16px',
+    backgroundColor: '#007BFF',
+    color: 'white',
+    border: 'none',
+    padding: '12px 24px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '16px',
+    transitionDuration: '0.4s',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    margin: 'auto',
+    display: 'block',
+  },
 };
 
 const CurrentEarning = () => {
   const [isAllTimeSelected, setAllTimeSelected] = useState(false);
+  const [videoURL, setVideoURL] = useState('');
 
   const handleTabClick = (isAllTime) => {
     setAllTimeSelected(isAllTime);
+  };
+
+  const handleReplaceClick = () => {
+    const url = window.prompt('Please enter the URL of the YouTube video');
+    const videoId = url.split('v=')[1];
+    setVideoURL(`https://www.youtube.com/embed/${videoId}`);
   };
 
   return (
@@ -226,10 +250,15 @@ const CurrentEarning = () => {
           <Typography variant="h5" style={styles.currentContent}>
             Current Content
           </Typography>
-          <div style={styles.videoPreview}></div>
-          <Typography variant="body1" style={styles.replaceText}>
-            Replace
-          </Typography>
+          <div style={styles.videoPreview}>
+            {videoURL && <iframe src={videoURL} title="Selected Video" width="100%" height="95%" />}
+          </div>
+          <button
+          onClick={handleReplaceClick}
+          style={styles.replaceButton}
+          >
+          Link Video
+          </button>
         </div>
       )}
       {isAllTimeSelected && (
