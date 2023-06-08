@@ -14,8 +14,10 @@ const LoginPage = () => {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [signupErrorMessage, setSignupErrorMessage] = useState('');
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -39,6 +41,9 @@ const LoginPage = () => {
     setResetEmail('');
     setSignupEmail('');
     setSignupPassword('');
+    setUsername('');
+    setErrorMessage('');
+    setSignupErrorMessage('');
   };
 
   const LOGIN_MUTATION = gql`
@@ -50,8 +55,8 @@ const LoginPage = () => {
   `;
 
   const SIGNUP_MUTATION = gql`
-    mutation Signup($email: String!, $password: String!) {
-      createUser(email: $email, password: $password) {
+    mutation Signup($username: String!, $email: String!, $password: String!) {
+      createUser(username: $username, email: $email, password: $password) {
         email
       }
     }
@@ -102,34 +107,52 @@ const LoginPage = () => {
     setSignupPassword(event.target.value);
   };
 
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
+
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
+    if (username.length < 3) {
+      setSignupErrorMessage('Username must be at least 3 characters long.');
+      return;
+    }
+    if (signupPassword.length < 5) {
+      setSignupErrorMessage('Password must be at least 5 characters long.');
+      return;
+    }
+  
     try {
       const { data } = await signup({
         variables: {
+          username,
           email: signupEmail,
           password: signupPassword,
         },
       });
-
+  
       if (data.createUser.email) {
         setSuccessMessage('Signup successful!');
         // Save the token to local storage or a state management system
         // Redirect the user to the desired page, e.g., navigate("/home");
         navigate('/home');
       } else {
-        setErrorMessage('An error occurred during signup. Please try again.');
+        setSignupErrorMessage('An error occurred during signup. Please try again.');
       }
     } catch (error) {
-      setErrorMessage('An error occurred during signup. Please try again.');
+      setSignupErrorMessage('An error occurred during signup. Please try again.');
       console.error(error);
     }
-
+  
     handleModalClose();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (email.trim() === '' || password.trim() === '') {
+      setErrorMessage('Please enter both email and password.');
+      return;
+    }
     handleLoginAttempt();
   };
 
@@ -141,22 +164,6 @@ const LoginPage = () => {
       <div className="rightSection">
         <div className="formContainer">
           <h1>Log in</h1>
-          {successMessage && (
-            <p className="successMessage">
-              {successMessage}
-              <span className="closePopup" onClick={() => setSuccessMessage('')}>
-                &times;
-              </span>
-            </p>
-          )}
-          {errorMessage && (
-            <p className="errorMessage">
-              {errorMessage}
-              <span className="closePopup" onClick={() => setErrorMessage('')}>
-                &times;
-              </span>
-            </p>
-          )}
           <form onSubmit={handleSubmit}>
             <p className="Username">Email</p>
             <input
@@ -165,6 +172,7 @@ const LoginPage = () => {
               className="inputField"
               value={email}
               onChange={handleEmailChange}
+              required
             />
             <p className="Password">Password</p>
             <input
@@ -173,11 +181,20 @@ const LoginPage = () => {
               className="inputField"
               value={password}
               onChange={handlePasswordChange}
+              required
             />
             <button type="submit" className="button login">
               <img src={lockImage} alt="Lock" className="buttonIcon" />
               <b>Log in</b>
             </button>
+            {errorMessage && (
+              <p className="errorMessage">
+                {errorMessage}
+                <span className="closePopup" onClick={() => setErrorMessage('')}>
+                  &times;
+                </span>
+              </p>
+            )}
             <p>
               <span className="link" onClick={handleResetPassword}>
                 Forgot Password?
@@ -204,6 +221,7 @@ const LoginPage = () => {
                 className="inputField"
                 value={resetEmail}
                 onChange={handleResetEmailChange}
+                required
               />
               <button className="button signupbutton">Reset</button>
             </form>
@@ -220,21 +238,39 @@ const LoginPage = () => {
             <h2>Sign Up</h2>
             <form onSubmit={handleSignupSubmit}>
               <input
+                type="text"
+                placeholder="Username"
+                className="inputField Signupmodal"
+                value={username}
+                onChange={handleUsernameChange}
+                required
+              />
+              <input
                 type="email"
                 placeholder="Email"
-                className="inputField email"
+                className="inputField Signupmodal"
                 value={signupEmail}
                 onChange={handleSignupEmailChange}
+                required
               />
               <input
                 type="password"
                 placeholder="Password"
-                className="inputField password"
+                className="inputField Signupmodal"
                 value={signupPassword}
                 onChange={handleSignupPasswordChange}
+                required
               />
+              {signupErrorMessage && (
+                <p className="errorMessage">
+                  {signupErrorMessage}
+                  <span className="closePopup" onClick={() => setSignupErrorMessage('')}>
+                    &times;
+                  </span>
+                </p>
+              )}
               <button
-                className="button signupbutton signupmodal"
+                className="button signupbutton Signupmodal"
                 disabled={signupLoading}
               >
                 {signupLoading ? 'Signing up...' : 'Sign Up'}

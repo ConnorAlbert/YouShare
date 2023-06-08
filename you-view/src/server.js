@@ -13,11 +13,12 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(email: String!, password: String!): User
+    createUser(username: String!, email: String!, password: String!): User
     login(email: String!, password: String!): AuthResponse
   }
 
   type User {
+    username: String!
     email: String!
     password: String!
   }
@@ -29,6 +30,7 @@ const typeDefs = gql`
 `;
 
 const userSchema = new mongoose.Schema({
+  username: String,
   email: String,
   password: String,
 });
@@ -47,12 +49,12 @@ const resolvers = {
   },
   Mutation: {
     createUser: async (parent, args) => {
-      const { email, password } = args;
+      const { username, email, password } = args;
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         throw new Error('Email address already exists');
       }
-      const newUser = new User({ email, password });
+      const newUser = new User({ username, email, password });
       await newUser.save();
       return newUser;
     },
