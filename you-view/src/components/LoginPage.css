@@ -142,3 +142,13 @@ h2 {
 .email, .password {
   margin-bottom: 20px;
 }
+
+.Signupmodal {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.errorMessage {
+  color: red;
+  margin-top: 5px
+}
