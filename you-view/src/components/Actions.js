@@ -1,12 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Actions = ({ addXp }) => {
+
+  const navigate = useNavigate();
+
   return (
     <div style={{ backgroundColor: '#242F40', height: '100%', display: 'flex', flexDirection: 'column', color: 'white' }}>
       <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between' }}>
 
         {/* Section 1: View */}
-        <div style={{ flexBasis: '25%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => addXp(1.6)}>
+        <div style={{ flexBasis: '25%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => { navigate('/viewPage');  }}>
           <h3 style={{ textAlign: 'center', marginTop: 15 }}>View</h3>
           <div style={{ marginBottom: '10px', textAlign: 'center', width: '65%', height: '140px', backgroundColor: 'lightgray' }}></div>
           <div style={{ textAlign: 'center' }}>1.6<span role="img" aria-label="Spark Emoji">⚡️</span></div>
