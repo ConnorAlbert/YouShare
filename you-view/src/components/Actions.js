@@ -27,9 +27,7 @@ const Actions = ({ addXp }) => {
     <div style={{ backgroundColor: '#363636', height: '100%', display: 'flex', flexDirection: 'column', color: 'white' }}>
       <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between' }}>  
         {/* Section 0: YourVideo */}
-        <div 
-            onClick={handleLinkVideo}
-          
+        <div           
         style={{ flexBasis: '33%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }   }>
         <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10}}>Your Content</h3>
           {
@@ -70,7 +68,9 @@ const Actions = ({ addXp }) => {
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 marginTop: '75px',
-             }}>Link Your Video</button>
+             }}
+             onClick={handleLinkVideo}
+             >Link Your Video</button>
             )
             
           }
@@ -88,7 +88,8 @@ const Actions = ({ addXp }) => {
 
 
         {/* Section 1: View */}
-        <div style={{ flexBasis: '33%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => { navigate('/viewPage');  }}>
+        <div style={{ flexBasis: '33%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center',cursor: 'pointer',
+ }} onClick={() => { navigate('/viewPage');  }}>
           <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10}}>YouTube</h3>
           <div style={{ position: 'relative', width: '60%', height: '200px' }}>
     <iframe 
