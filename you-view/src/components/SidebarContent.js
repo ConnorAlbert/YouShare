@@ -22,6 +22,9 @@ const SidebarContent = ({ level, xp }) => {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
+      borderLeft: '1px solid white',
+      borderBottom: '1px solid white',
+      borderRight: '1px solid white',
     },
     levelXp: {
       textAlign: 'center',
