@@ -73,6 +73,7 @@ const Header = ({ level, xp }) => {
       height: '10vh', // Full height
       backgroundColor: '#363636',
       transition: 'transform 0.3s ease-in-out',
+      border: isHovered ? '1px solid white' : '1px solid transparent',
     },
     profileName: {
       fontSize: '1.5rem',
