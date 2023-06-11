@@ -31,7 +31,7 @@ const styles = {
     fontWeight: 'bold',
   },
   currentContent: {
-    color: '#e5e5e5',
+    color: '#363636',
     marginTop: '32px',
     fontSize: '24px',
     fontWeight: 'bold',

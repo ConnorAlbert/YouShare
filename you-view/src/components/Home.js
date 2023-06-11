@@ -16,7 +16,7 @@ const styles = {
     flexBasis: '16.67%',
   },
   mainContent: {
-    flexBasis: '83.33%',
+    flexBasis: '100%',
     overflow: 'hidden', // Disable scrolling
   },
 };
@@ -35,9 +35,9 @@ const Home = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.currentEarning}>
+      {/* <div style={styles.currentEarning}>
         <CurrentEarning />
-      </div>
+      </div> */}
       <div style={styles.mainContent}>
         <Header level={level} xp={xp}  />
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>

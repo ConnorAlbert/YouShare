@@ -17,6 +17,7 @@ const SidebarContent = ({ level, xp }) => {
 
   const styles = {
     container: {
+      backgroundColor: '#242F40',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',

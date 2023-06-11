@@ -30,12 +30,12 @@ const Featured = () => {
   };
 
   return (
-    <div style={{ height: '100%', backgroundColor: '#CCA43B', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100%', backgroundColor: '#242F40', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
         {/* Left Section */}
-        <div style={{ width: '22.5%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '10px' }}>
+        <div style={{ width: '22.5%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '10px', padding: '20px' }}>
           <AccountCircleIcon style={styles.icon} />
-          <h3 style={{ margin: '10px 0', color: '#242F40', textAlign: 'center' }}>Youhungry</h3>
+          <h3 style={{ margin: '10px 0', color: '#CCA43B', textAlign: 'center',fontSize: '36px' }}>Youhungry</h3>
           <div style={{ backgroundColor: '#242F40', borderRadius: '50px', padding: '10px', textAlign: 'center', width: '60%' }}>
             <p style={{ margin: '5px 0', color: 'white', fontSize: '24px' }}>Current 🔥: 7</p>
             <p style={{ margin: '5px 0', color: 'white', fontSize: '24px' }}>Avg 🔥: 2.6</p>
@@ -46,10 +46,21 @@ const Featured = () => {
 
         {/* Middle Section */}
 
-        <div style={{ width: '55%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <h2 style={{ marginTop: '0', textAlign: 'center', color: 'white' }}>Featured Creator</h2>
+        <div style={{ width: '45%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h2 style={{ marginTop: '0', textAlign: 'center', color: '#CCA43B',paddingTop: '10px' }}>Featured Creator</h2>
+          <div style={{ width: '100%', height: '400px', backgroundColor: 'lightgray' }}>
+          <iframe 
+          width={'100%'}
+          height={'100%'}
+                src={`https://www.youtube.com/embed/FWQ6-0Fj5Jw`} 
+                title="YouTube video player" 
+              frameborder="1" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen> 
+            </iframe>
 
-          <div style={{ width: '100%', height: '400px', backgroundColor: 'lightgray' }}></div>
+
+          </div>
         </div>
 
         {/* Right Section */}

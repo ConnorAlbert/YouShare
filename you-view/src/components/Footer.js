@@ -8,7 +8,7 @@ function Footer({ isVideoPlaying, progress }) {
   const navigate = useNavigate();
 
   return (
-    <div style={{ flex: 1, backgroundColor: '#242F40', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+    <div style={{ flex: 1, backgroundColor: '#363636', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
         <div onClick={() => navigate('/home')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '50px' }}>
           <ArrowCircleLeftOutlinedIcon style={{ color: 'white', fontSize: '7em' }} />
