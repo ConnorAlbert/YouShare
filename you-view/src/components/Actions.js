@@ -110,14 +110,14 @@ const Actions = ({ addXp }) => {
 </div>
 
          
-               <div style={{ textAlign: 'center', marginTop:5, fontSize:20 }}>1.6<span role="img" aria-label="Spark Emoji">⚡️</span></div>
+               <div style={{ textAlign: 'center', marginTop:2.5, fontSize:20 }}>1.6<span role="img" aria-label="Spark Emoji">⚡️</span></div>
         </div>
 
-        {/* Section 2: Like */}
+        {/* Section 2: Twitch */}
         <div style={{ flexBasis: '33%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => addXp(2.3)}>
-          <h3 style={{ textAlign: 'center', marginTop: 5 }}>Twitch</h3>
-          <div style={{ marginBottom: '10px', textAlign: 'center', width: '60%', height: '200px', backgroundColor: 'lightgray' }}> <h1 style={{backgroundColor: 'red', marginTop:'75px'}}>COMING SOON</h1></div>
-          <div style={{ textAlign: 'center' }}>2.3<span role="img" aria-label="Spark Emoji">⚡️</span></div>
+          <h3 style={{ textAlign: 'center',marginTop: 10, marginBottom: 10 }}>Twitch</h3>
+          <div style={{  textAlign: 'center', width: '60%', height: '200px', backgroundColor: 'lightgray' }}> <h1 style={{backgroundColor: 'red', marginTop:'75px'}}>COMING SOON</h1></div>
+          <div style={{ textAlign: 'center', marginTop:2.5, fontSize:20 }}>2.3<span role="img" aria-label="Spark Emoji">⚡️</span></div>
         </div>
 
         {/* <div style={{ flexBasis: '25%', borderRight: '2px solid black', paddingRight: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => addXp(4)}>
