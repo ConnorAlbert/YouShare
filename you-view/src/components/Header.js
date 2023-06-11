@@ -39,8 +39,11 @@ const Header = ({ level, xp }) => {
       paddingTop: '20px',
       paddingBottom: '20px',
       cursor: 'pointer',
-      backgroundColor: sidebarOpen ? '#242F40' : '#363636', // Modified backgroundColor property
-      border: isHovered ? '1px solid white' : '1px solid transparent', // Modified borderLeft property
+      backgroundColor: sidebarOpen ? '#242F40' : '#363636', 
+      borderTop: sidebarOpen ? '1px solid white' : isHovered ? '1px solid white' : '1px solid transparent',
+      borderLeft: sidebarOpen ? '1px solid white' : isHovered ? '1px solid white' : '1px solid transparent',
+      borderRight: sidebarOpen ? '1px solid white' : isHovered ? '1px solid white' : '1px solid transparent',
+      borderBottom: sidebarOpen ? '1px solid transparent' : isHovered ? '1px solid white' : '1px solid transparent',
     },
     icon: {
       fontSize: '2.5rem',

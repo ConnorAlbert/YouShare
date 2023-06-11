@@ -54,7 +54,7 @@ const Featured = () => {
           height={'100%'}
                 src={`https://www.youtube.com/embed/FWQ6-0Fj5Jw`} 
                 title="YouTube video player" 
-              frameborder="1" 
+              frameborder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
               allowfullscreen> 
             </iframe>
