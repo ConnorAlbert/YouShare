@@ -7,7 +7,7 @@ import HeaderContent from '../components/HeaderContent'
 
 
 
-const Header = ({ level, xp }) => {
+const Header = ({ level, xp, handleSidebarToggle }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false); // New state
 
@@ -15,6 +15,7 @@ const Header = ({ level, xp }) => {
 
   const toggleSidebar = () => {
     setSidebarOpen(prevSidebarOpen => !prevSidebarOpen);
+    handleSidebarToggle();
   };
 
 

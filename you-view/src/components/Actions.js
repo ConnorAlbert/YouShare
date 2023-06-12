@@ -79,7 +79,9 @@ const Actions = ({ addXp }) => {
             (
             <div style={{ textAlign: 'center', marginTop:5, fontSize:18,cursor: 'pointer',  color: '#007BFF',  textDecoration: 'underline',
 
-          }}>Change Video</div>) 
+          }}             
+           onClick={handleLinkVideo}
+          >Change Video</div>) 
             : 
             (<></>)}
 
