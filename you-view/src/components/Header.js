@@ -71,12 +71,11 @@ const Header = ({ level, xp }) => {
     },
     sidebar: {
       position: 'fixed',
+      height: '85.4%',
       right: '0',
       width: '13.95%', // Match the width of the profile box
-      height: '10vh', // Full height
       backgroundColor: '#363636',
       transition: 'transform 0.3s ease-in-out',
-      border: isHovered ? '1px solid white' : '1px solid transparent',
     },
     profileName: {
       fontSize: '1.5rem',

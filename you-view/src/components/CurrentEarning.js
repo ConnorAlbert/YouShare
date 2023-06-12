@@ -140,17 +140,10 @@ const styles = {
 
 const CurrentEarning = () => {
   const [isAllTimeSelected, setAllTimeSelected] = useState(false);
-  const [videoURL, setVideoURL] = useState('');
-
   const handleTabClick = (isAllTime) => {
     setAllTimeSelected(isAllTime);
   };
 
-  const handleReplaceClick = () => {
-    const url = window.prompt('Please enter the URL of the YouTube video');
-    const videoId = url.split('v=')[1];
-    setVideoURL(`https://www.youtube.com/embed/${videoId}`);
-  };
 
   return (
     <div>
@@ -245,29 +238,6 @@ const CurrentEarning = () => {
           </Typography>
         </div>
       </Box>
-      {!isAllTimeSelected && (
-        <div>
-          <Typography variant="h5" style={styles.currentContent}>
-            Current Content
-          </Typography>
-          <div style={styles.videoPreview}>
-            {videoURL && <iframe src={videoURL} title="Selected Video" width="100%" height="95%" />}
-          </div>
-          <button
-          onClick={handleReplaceClick}
-          style={styles.replaceButton}
-          >
-          Link Video
-          </button>
-        </div>
-      )}
-      {isAllTimeSelected && (
-        <div>
-          <Typography variant="h5" style={styles.currentContent}>
-            Select a Video for Earning
-          </Typography>
-        </div>
-      )}
     </div>
   );
 };
