@@ -25,6 +25,21 @@ html, body {
   flex: 1 1 auto;
 }
 
+.googleLoginButton {
+  display: block;
+  text-decoration: none;
+  background-color: #db4437;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.googleLoginButton:hover {
+  background-color: #c33c32;
+}
+
 .formContainer {
   width: 30%;
   padding: 20px;
