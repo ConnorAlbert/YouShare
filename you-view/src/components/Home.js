@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import CurrentEarning from './CurrentEarning';
 import Header from './Header';
 import Featured from './Featured';
 import Actions from './Actions';
@@ -11,12 +10,8 @@ const styles = {
     height: '100vh',
     overflow: 'hidden', // Disable scrolling
   },
-  currentEarning: {
-    backgroundColor: "#363636",
-    flexBasis: '16.67%',
-  },
   mainContent: {
-    flexBasis: '83.33%',
+    flexBasis: '100%',
     overflow: 'hidden', // Disable scrolling
   },
 };
@@ -33,13 +28,13 @@ const Home = () => {
     }
   };
 
+  const handleSidebarToggle = () => {
+  };
+
   return (
     <div style={styles.container}>
-      <div style={styles.currentEarning}>
-        <CurrentEarning />
-      </div>
       <div style={styles.mainContent}>
-        <Header level={level} xp={xp}  />
+      <Header level={level} xp={xp} handleSidebarToggle={handleSidebarToggle} />
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           <div style={{ flexBasis: '55%' }}>
             <Featured />

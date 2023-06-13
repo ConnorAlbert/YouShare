@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 
-function ContentArea({ onPlaybackStateChange, setProgress }) {
+function ContentArea({ onPlaybackStateChange, setProgress, currentVideo }) {
   const playerRef = useRef(null);
-  const [currentVideo, setCurrentVideo] = useState('https://www.youtube.com/watch?v=hQrmtwhztnc');
   const [playing,setPlaying]= useState(false);
   let intervalId = null; // Identifier of the interval for cleaning up later
 
@@ -61,11 +60,10 @@ function ContentArea({ onPlaybackStateChange, setProgress }) {
     const duration = event.target.getDuration();
     const calculatedProgress = (currentTime / duration) * 100;
     setProgress(calculatedProgress);
-    console.log('Progress:', calculatedProgress);
   };
 
   return (
-    <div style={{ flex: 4, backgroundColor: '#363636', display: 'flex', flexDirection: 'row', color: 'white' }}>
+    <div style={{ flex: 4, backgroundColor: '#242F40', display: 'flex', flexDirection: 'row', color: 'white' }}>
       <div style={{ flex: '0 0 20%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <button style={{ marginBottom: '10px', cursor: 'pointer', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '15px 30px' }}>
           <ThumbUpAltOutlinedIcon style={{ fontSize: '28px', marginRight: '5px' }} />
@@ -80,7 +78,7 @@ function ContentArea({ onPlaybackStateChange, setProgress }) {
       </div>
       <div style={{ flex: '0 0 20%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ marginBottom: '10px', fontSize: '24px' }}>Add a comment</div>
-        <textarea placeholder="Type a constructive comment and publish it to earn ✨" style={{ backgroundColor: '#242F40', marginBottom: '10px', width: '80%', height: '25%', resize: 'none', padding: '10px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '5px', color: 'white' }} />
+        <textarea placeholder="Type a constructive comment and publish it to earn ✨" style={{ backgroundColor: '#363636', marginBottom: '10px', width: '80%', height: '25%', resize: 'none', padding: '10px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '5px', color: 'white' }} />
         <button style={{ marginTop: '10px', cursor: 'pointer', backgroundColor: '#CCA43B', color: 'white', border: 'none', borderRadius: '5px', fontSize: '24px', padding: '15px 30px' }}>Publish</button>
         <div style={{ marginTop: '10px', fontSize: '24px' }}>3.2✨</div>
       </div>
