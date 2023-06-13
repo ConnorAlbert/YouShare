@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
 import './LoginPage.css';
 import lockImage from '../assets/Images/Lock.png';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -162,6 +163,9 @@ const LoginPage = () => {
         <h1>YouShare</h1>
       </div>
       <div className="rightSection">
+      <Link to="http://localhost:4000/api/auth/google" className="googleLoginButton">
+          LOGIN WITH GOOGLE
+      </Link>
         <div className="formContainer">
           <h1>Log in</h1>
           <form onSubmit={handleSubmit}>
