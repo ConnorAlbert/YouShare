@@ -1,12 +1,14 @@
-const express = require('express');
+const  express = require('express');
 const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
+const authRoutes = require('./routes/auth');
 
-const app = express();
 
 async function startServer() {
+  const app = express();
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -25,6 +27,8 @@ async function startServer() {
   console.log('Connected to MongoDB');
 
   app.use(express.json());
+
+  app.use('/api/auth', authRoutes);
 
   server.applyMiddleware({ app, cors: true });
 
