@@ -10,7 +10,6 @@ passport.use(
       scope: [
         'email',
         'profile',
-        'https://www.googleapis.com/auth/youtube.force-ssl', // Added scope for YouTube actions
       ],
     },
     async (accessToken, refreshToken, profile, done) => {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import axios from 'axios';
 
 const styles = {
@@ -16,15 +17,19 @@ const styles = {
     transition: 'background-color 0.3s ease',
     margin: '10px 0',
     cursor: 'pointer',
+    width: '100%', // Make buttons full width for consistent alignment
   },
   buttonLike: {
-    backgroundColor: '#5c5c5c',
+    backgroundColor: '#007BFF',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonComment: {
-    backgroundColor: '#5c5c5c',
+    backgroundColor: 'rgb(204, 164, 59)',
   },
   buttonSubscribe: {
-    backgroundColor: '#5c5c5c',
+    backgroundColor: 'rgb(231, 14, 23)',
   },
   buttonLiked: {
     backgroundColor: '#4CAF50',
@@ -39,22 +44,20 @@ const styles = {
     cursor: 'not-allowed',
   },
   progressBarContainer: {
-    width: '100%',
-    height: '20px',
-    backgroundColor: '#1f2937',
-    borderRadius: '5px',
-    marginTop: '20px',
-    boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.3)',
+    height: '12px',
+    backgroundColor: '#fff',
+    width: '200%',
+    marginTop: '10px',
     position: 'relative',
+    borderRadius: '5px',
+    boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.3)',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#4CAF50',
+    background: 'linear-gradient(to right, #ffb02e, #ff6723)',
     borderRadius: '5px',
-    transition: 'width 0.3s ease',
-    position: 'absolute',
-    top: 0,
-    left: 0,
+    transition: 'width 0.5s ease',
+    
   },
   progressText: {
     position: 'absolute',
@@ -200,7 +203,6 @@ const Featured = () => {
           <AccountCircleIcon style={styles.icon} />
           <h3 style={{ margin: '10px 0', color: '#CCA43B', textAlign: 'center', fontSize: '36px' }}>{featuredUser.username}</h3>
           <div style={{ backgroundColor: '#242F40', borderRadius: '50px', padding: '10px', textAlign: 'center', width: '60%' }}>
-            {/* Update with dynamic data */}
             <p style={{ margin: '5px 0', color: 'white', fontSize: '24px' }}>Current 🔥: 7</p>
             <p style={{ margin: '5px 0', color: 'white', fontSize: '24px' }}>Avg 🔥: 2.6</p>
             <p style={{ margin: '5px 0', color: 'white', fontSize: '24px' }}>Given ⚡️: 234k</p>
@@ -227,49 +229,56 @@ const Featured = () => {
         </div>
 
         {/* Right Section */}
-        <div style={{ width: '22.5%', marginLeft: '10px', padding: '20px', marginTop: '100px'
-         }}>
-          <div style={{ backgroundColor: '#1f2937', borderRadius: '8px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <button
-                onClick={() => handleActionClick('like')}
-                disabled={checkboxes.like}
-                style={{ ...styles.button, ...styles.buttonLike, ...checkboxes.like && styles.buttonLiked }}
-              >
-                {checkboxes.like ? 'Liked' : 'Like'}
-              </button>
-              <button
-                onClick={() => handleActionClick('comment')}
-                disabled={checkboxes.comment}
-                style={{ ...styles.button, ...styles.buttonComment, ...checkboxes.comment && styles.buttonCommented }}
-              >
-                {checkboxes.comment ? 'Commented' : 'Comment'}
-              </button>
-              <button
-                onClick={() => handleActionClick('subscribe')}
-                disabled={checkboxes.subscribe}
-                style={{ ...styles.button, ...styles.buttonSubscribe, ...checkboxes.subscribe && styles.buttonSubscribed }}
-              >
-                {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
-              </button>
-              <div style={styles.progressBarContainer}>
-                <div style={{ ...styles.progressBar, width: `${progressWidth}%` }} />
-                <div style={styles.progressText}>{`${Math.round(progressWidth)}%`}</div>
-              </div>
+        <div style={{ width: '22.5%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '10px', padding: '20px', justifyContent: 'center' }}>
+          <h2 style={{ marginTop: '0', textAlign: 'center', color: '#CCA43B' }}>Actions</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <button
+              style={checkboxes.like ? { ...styles.button, ...styles.buttonLiked } : { ...styles.button, ...styles.buttonLike }}
+              onClick={() => handleActionClick('like')}
+              disabled={checkboxes.like}
+            >
+              <ThumbUpAltOutlinedIcon style={{ marginRight: '10px' }} />
+              {checkboxes.like ? 'Liked' : 'Like'}
+            </button>
+            <button
+              style={checkboxes.comment ? { ...styles.button, ...styles.buttonCommented } : { ...styles.button, ...styles.buttonComment }}
+              onClick={() => handleActionClick('comment')}
+              disabled={checkboxes.comment}
+            >
+              {checkboxes.comment ? 'Commented' : 'Comment'}
+            </button>
+            <button
+              style={checkboxes.subscribe ? { ...styles.button, ...styles.buttonSubscribed } : { ...styles.button, ...styles.buttonSubscribe }}
+              onClick={() => handleActionClick('subscribe')}
+              disabled={checkboxes.subscribe}
+            >
+              {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
+            </button>
+            <div style={styles.progressBarContainer}>
+              <div style={{ ...styles.progressBar, width: `${progressWidth}%` }}></div>
+              <span style={styles.progressText}>{Math.round(progressWidth)}%</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Verification Modal */}
       {verification.isVisible && (
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
-            <p>{`You clicked ${verification.action}. Did you complete the action?`}</p>
-            <div>
-              <button style={styles.modalButton} onClick={() => handleVerificationResponse(true)}>Yes</button>
-              <button style={{ ...styles.modalButton, ...styles.modalButtonClose }} onClick={() => handleVerificationResponse(false)}>No</button>
-            </div>
+            <h2>{verification.action.charAt(0).toUpperCase() + verification.action.slice(1)} Verification</h2>
+            <p>Did you complete the action?</p>
+            <button
+              style={styles.modalButton}
+              onClick={() => handleVerificationResponse(true)}
+            >
+              Yes
+            </button>
+            <button
+              style={{ ...styles.modalButton, ...styles.modalButtonClose }}
+              onClick={() => handleVerificationResponse(false)}
+            >
+              No
+            </button>
           </div>
         </div>
       )}
