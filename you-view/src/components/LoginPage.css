@@ -1,64 +1,75 @@
-.loginPage {
-  display: flex;
-  height: 100vh;
-}
-
+/* General styles */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  caret-color: transparent; /* Hide cursor globally by default */
 }
 
-.leftSection {
-  flex: 1;
+.loginPage {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  background-image: url('../assets/Images/3607424.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.rightSection {
-  background-color: #e5e5e5;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1 1 auto;
-}
-
-.googleLoginButton {
-  display: block;
-  text-decoration: none;
-  background-color: #db4437;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 4px;
-  font-weight: bold;
+.header {
   text-align: center;
+  margin-bottom: 30px;
 }
 
-.googleLoginButton:hover {
-  background-color: #c33c32;
+.loginheader {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logoImage {
+  width: auto; /* Adjust based on your logo's size */
+  height: 100px; /* Adjust to fit your layout */
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .formContainer {
-  width: 30%;
+  width: 100%;
+  max-width: 400px;
   padding: 20px;
-  border-radius: 5px;
-  height: 60%;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
 }
 
+/* Input fields */
 .inputField {
-  width: 100%;
+  width: 75%;
   margin-bottom: 10px;
   padding: 10px;
   font-size: 16px;
   border-radius: 15px;
   border: 2px solid rgb(3, 3, 3);
+  margin-left: 12%;
   background-color: #e5e5e5;
-  margin-bottom: 0px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  caret-color: black; /* Show cursor in input fields */
 }
 
+/* Apply caret-color to all input fields explicitly */
+input, textarea {
+  caret-color: black; /* Show cursor in input fields */
+}
+
+/* Button styles */
 .button {
   width: 100%;
   padding: 8px;
@@ -67,14 +78,64 @@ html, body {
   border: none;
   color: white;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.link {
-  color: #1e1d80;
-  text-decoration: underline;
+/* Login button */
+.login {
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: none;
+  color: white;
   cursor: pointer;
-  text-decoration: none;
-  margin-left: 15px;
+  background-color: #242f40;
+  margin-top: 20px;
+  margin-left: 25%;
+}
+
+.login:hover {
+  background-color: #1e1d80;
+}
+
+/* Signup button */
+.signupbutton {
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background-color: #242f40;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 25%;
+}
+
+.signupbutton:hover {
+  background-color: #1e1d80;
+}
+
+.buttonIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.Username, .Password {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.errorMessage {
+  color: red;
+  margin-top: 5px;
 }
 
 .modalOverlay {
@@ -104,66 +165,40 @@ html, body {
   right: 10px;
   cursor: pointer;
   font-size: 24px;
-  color: #1e1d80; 
+  color: #1e1d80;
 }
 
-h1 {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.Username, .Password {
-  margin-left: 10px;
-  margin-bottom: 5px;
-}
-
-.login {
-  margin-top: 30px;
-  background-color: #242f40;
-  border-radius: 15px;
-}
-
-.signupbutton {
-  width: 65%;
-  padding: 10px;
+.link {
+  color: #1e1d80; /* Match the button text color */
+  text-decoration: none;
   font-size: 16px;
-  border-radius: 3px;
-  border: none;
-  color: white;
   cursor: pointer;
-  background-color: #1e1d80;
+  transition: color 0.3s, text-decoration 0.3s;
+  margin-left: 25%;
+}
+
+.link:hover {
+  color: #000; /* Color on hover */
+  text-decoration: underline; /* Add underline on hover */
+}
+
+.google {
   display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
-}
-
-.buttonIcon {
-  width: 14px; 
-  height: 14px; 
-  margin-right: 8px; 
-}
-
-h2 {
-  justify-content: center;
-  display: flex;
-}
-
-.signupmodal {
-  margin-top: 0
-}
-
-.email, .password {
-  margin-bottom: 20px;
-}
-
-.Signupmodal {
-  margin-bottom: 10px;
-  margin-top: 0px;
+  flex-direction: column;
+  align-items: center; 
+  margin-bottom: 30px;
 }
 
 .errorMessage {
   color: red;
-  margin-top: 5px
+  font-size: 14px;
+  margin: 10px 0;
+  position: relative;
+}
+
+.closePopup {
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  font-weight: bold;
 }
