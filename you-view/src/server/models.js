@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  featuredVideoId: {
+    type: String,
+    required: false, // This is already optional
+    unique: false,
+  },
 });
 
 // Create a unique index with case-insensitive collation for usernames
