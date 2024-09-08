@@ -4,7 +4,7 @@ import { useMutation, gql } from '@apollo/client';
 import GoogleButton from 'react-google-button';
 import LoginForm from './LoginForm';
 import SignupModal from './SignupModal';
-import './LoginPage.css';
+import '../styles/LoginPage.css';
 import lockImage from '../assets/Images/Lock.png';
 import Logo from '../assets/Images/logo-no-background.png'; 
 

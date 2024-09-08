@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Actions = ({ addXp }) => {
@@ -14,12 +15,20 @@ const Actions = ({ addXp }) => {
     return null;
   };
 
-  const handleLinkVideo = () => {
+  const handleLinkVideo = async () => {
     const videoUrl = prompt("Please enter the YouTube video URL:");
     if (videoUrl) {
       const videoId = extractVideoId(videoUrl);
       if (videoId) {
         setVideoId(videoId);
+        // Send videoId to the server to update the user
+        try {
+          await axios.post('http://localhost:4000/api/update-featured-video', {
+            videoId,
+          });
+        } catch (error) {
+          console.error('Error updating featured video:', error);
+        }
       } else {
         alert("Invalid YouTube video URL");
       }
