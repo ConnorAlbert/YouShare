@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,26 +6,67 @@ const Actions = ({ addXp }) => {
   const navigate = useNavigate();
   const [videoId, setVideoId] = useState('');
 
+  // Extract video ID from YouTube URL
   const extractVideoId = (url) => {
-    if (url.includes('youtu.be')) {
-      return url.split('youtu.be/')[1];
-    } else if (url.includes('youtube.com/watch')) {
-      return new URL(url).searchParams.get('v');
+    try {
+      // Check if the URL is a valid string
+      if (typeof url !== 'string' || !url) {
+        console.error('Invalid URL format:', url);
+        return null;
+      }
+
+      // Ensure URL is valid
+      const videoUrl = new URL(url);
+
+      // Check for 'youtu.be' format
+      if (videoUrl.hostname === 'youtu.be') {
+        return videoUrl.pathname.split('/')[1];
+      }
+
+      // Check for 'youtube.com/watch' format
+      if (videoUrl.hostname === 'www.youtube.com' && videoUrl.pathname === '/watch') {
+        return videoUrl.searchParams.get('v');
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error parsing URL:', error);
+      return null;
     }
-    return null;
   };
 
+  // Fetch current user's video ID when the component mounts
+  useEffect(() => {
+    const fetchCurrentVideo = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+        const response = await axios.get('http://localhost:4000/api/current-featured-video', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (response.data.videoId) {
+          setVideoId(response.data.videoId);
+        }
+      } catch (error) {
+        console.error('Error fetching current video:', error);
+      }
+    };
+
+    fetchCurrentVideo();
+  }, []);
+
+  // Handle linking a new video
   const handleLinkVideo = async () => {
     const videoUrl = prompt("Please enter the YouTube video URL:");
     if (videoUrl) {
-      const videoId = extractVideoId(videoUrl);
-      if (videoId) {
-        setVideoId(videoId);
-        // Send videoId to the server to update the user
+      const newVideoId = extractVideoId(videoUrl);
+      if (newVideoId) {
         try {
-          await axios.post('http://localhost:4000/api/update-featured-video', {
-            videoId,
-          });
+          const token = localStorage.getItem('token'); // Retrieve token from localStorage
+          await axios.post('http://localhost:4000/api/update-featured-video', 
+            { videoId: newVideoId }, 
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setVideoId(newVideoId); // Update local state
         } catch (error) {
           console.error('Error updating featured video:', error);
         }
@@ -68,7 +109,6 @@ const Actions = ({ addXp }) => {
   return (
     <div style={{ backgroundColor: '#363636', height: '100%', display: 'flex', flexDirection: 'column', color: 'white' }}>
       <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between' }}>
-        
         {/* Section 0: Your Video */}
         <div style={sectionStyle}>
           <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10 }}>Your Content</h3>
@@ -129,7 +169,7 @@ const Actions = ({ addXp }) => {
             <h1 style={{ backgroundColor: 'red', marginTop: '75px' }}>COMING SOON</h1>
           </div>
           <div style={{ textAlign: 'center', marginTop: 2.5, fontSize: 20 }}>
-            2.3<span role="img" aria-label="Spark Emoji">⚡️</span>
+            0.5<span role="img" aria-label="Star Emoji">⭐</span>
           </div>
         </div>
       </div>
