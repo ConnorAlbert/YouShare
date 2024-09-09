@@ -48,7 +48,7 @@ const LoginPage = () => {
   return (
     <div className="loginPage">
       <div className="header">
-        <img src={Logo} alt="Logo" className="logoImage" />
+      <img src={Logo} alt="Logo" className="logoImage" />
       </div>
       <div className="mainContent">
         <div className="formContainer">

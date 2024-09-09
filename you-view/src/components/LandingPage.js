@@ -1,4 +1,4 @@
-import React, { useRef  } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import LandingPageHeader from './LandingPageHeader';
 import Button from '@mui/material/Button';
@@ -76,7 +76,6 @@ const styles = {
   buttonUnderImage: {
     transform: 'translateY(-50px)',
     marginRight: '100px',
-
   },
   image: {
     maxHeight: '100%',
@@ -84,13 +83,13 @@ const styles = {
   },
   nextSection: {
     backgroundColor: '#242F40',
-    height: '7vh',  
+    height: '7vh',
     position: 'relative',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-start',  
+    alignItems: 'flex-start',
     width: '100%',
-    padding: '50px 0', 
+    padding: '50px 0',
   },
   nextSectionButton: {
     backgroundColor: '#363636',
@@ -101,24 +100,23 @@ const styles = {
     padding: '20px',
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    width: '35%', 
-    position: 'relative',  
-    zIndex: 1, 
+    width: '35%',
+    position: 'relative',
+    zIndex: 1,
   },
   leftBouncingArrow: {
     fontSize: '72px',
-    left: '200px', 
-    top: '40%', 
-    transform: 'translateY(-50%)', 
+    left: '200px',
+    top: '40%',
+    transform: 'translateY(-50%)',
   },
   rightBouncingArrow: {
     fontSize: '72px',
-    right: '200px',  
-    top: '40%', 
-    transform: 'translateY(-50%)', 
+    right: '200px',
+    top: '40%',
+    transform: 'translateY(-50%)',
   },
 };
-
 
 const bounce = keyframes`
   0%, 100% {
@@ -136,15 +134,16 @@ const BouncingArrow = styled(ArrowDownwardIcon)`
   color: white;
 `;
 
-
-
 const LandingPage = () => {
-
   const howItWorksSectionRef = useRef(null);
 
   const handleHowItWorksClick = () => {
     howItWorksSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Check if the user is logged in by looking for a token in localStorage
+  const isLoggedIn = !!localStorage.getItem('token');
+
   return (
     <div style={styles.landingPage}>
       <LandingPageHeader />
@@ -156,35 +155,35 @@ const LandingPage = () => {
             Your Influence!
           </h1>
           <p style={styles.body}>
-          Ever felt like your content could make waves if only the algorithms played nice? <br /><br />
-          With youShare, seize control from elusive algorithms and put the power back in your hands.<br /> Here, your creative brilliance meets an audience
-          of like-minded individuals hungry for content <br />just like yours. And the beauty of it all? You're in the driver's
-          seat. The more content you explore, <br />the broader your reach becomes. Dive into a sea of creativity, and in return,
-          let your own work<br /> bask in the limelight. With youShare, ignite your influence. Start the content revolution today!.
+            Ever felt like your content could make waves if only the algorithms played nice? <br /><br />
+            With youShare, seize control from elusive algorithms and put the power back in your hands.<br /> Here, your creative brilliance meets an audience
+            of like-minded individuals hungry for content <br />just like yours. And the beauty of it all? You're in the driver's
+            seat. The more content you explore, <br />the broader your reach becomes. Dive into a sea of creativity, and in return,
+            let your own work<br /> bask in the limelight. With youShare, ignite your influence. Start the content revolution today!.
           </p>
         </div>
         <div style={styles.imageContainer}>
           <img src={Image} alt="computer" style={styles.image} />
           <div style={styles.buttonUnderImage}>
             <Box style={styles.shadowBox}>
-            <Link
-            to="/login"
-            style={{
-              ...styles.link,
-            }}
-          >
-              <Button variant="contained" style={styles.button}>
-                Get Started
-                <ArrowForwardIcon style={styles.arrowIcon} />
-              </Button>
+              <Link
+                to={isLoggedIn ? '/home' : '/login'}  // Redirect based on login status
+                style={{
+                  ...styles.link,
+                }}
+              >
+                <Button variant="contained" style={styles.button}>
+                  Get Started
+                  <ArrowForwardIcon style={styles.arrowIcon} />
+                </Button>
               </Link>
             </Box>
           </div>
         </div>
       </div>
       <div style={styles.nextSection}>
-      <BouncingArrow style={styles.leftBouncingArrow} />
-      <Button variant="contained" style={styles.nextSectionButton} onClick={handleHowItWorksClick}>
+        <BouncingArrow style={styles.leftBouncingArrow} />
+        <Button variant="contained" style={styles.nextSectionButton} onClick={handleHowItWorksClick}>
           How it all works
         </Button>
         <BouncingArrow style={styles.rightBouncingArrow} />
@@ -199,7 +198,5 @@ const LandingPage = () => {
     </div>
   );
 };
-
-
 
 export default LandingPage;
