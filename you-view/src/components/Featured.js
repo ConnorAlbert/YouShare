@@ -223,7 +223,7 @@ const styles = {
     borderRadius: '25px',
     height: '20px',
     marginTop: '20px',
-    position: 'relative',
+    position: 'static',
     overflow: 'hidden',
   },
   progressBar: {
