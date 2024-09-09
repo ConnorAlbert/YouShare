@@ -79,6 +79,7 @@ input, textarea {
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-left: 100px !important;
 }
 
 /* Login button */
@@ -202,3 +203,4 @@ h2 {
   cursor: pointer;
   font-weight: bold;
 }
+
