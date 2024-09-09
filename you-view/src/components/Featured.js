@@ -20,21 +20,24 @@ const Featured = () => {
   const [verification, setVerification] = useState({ action: '', isVisible: false });
   const [channelId, setChannelId] = useState('');
   const [featuredUser, setFeaturedUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null); // Store the current user's data
   const [loading, setLoading] = useState(true);
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
-    const fetchFeaturedUser = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:4000/api/random-featured-user', {
-          headers: { Authorization: `Bearer ${token}` }
+        
+        // Fetch the featured user
+        const featuredResponse = await axios.get('http://localhost:4000/api/random-featured-user', {
+          headers: { Authorization: `Bearer ${token}` },
         });
         
-        setFeaturedUser(response.data);
-        if (response.data.featuredVideoId) {
-          const videoId = extractVideoId(response.data.featuredVideoId);
+        setFeaturedUser(featuredResponse.data);
+        if (featuredResponse.data.featuredVideoId) {
+          const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
           if (videoId) {
             const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
             const videoData = await videoResponse.json();
@@ -44,18 +47,25 @@ const Featured = () => {
             }
           }
         }
+
+        // Fetch the current logged-in user's data
+        const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCurrentUser(currentUserResponse.data);
+
       } catch (error) {
         if (error.response?.status === 401) {
           alert('Unauthorized. Please log in again.');
         } else {
-          console.error('Error fetching featured user:', error);
+          console.error('Error fetching data:', error);
         }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFeaturedUser();
+    fetchData();
   }, [apiKey]);
 
   useEffect(() => {
@@ -80,9 +90,24 @@ const Featured = () => {
     }
   };
 
-  const handleVerificationResponse = (didComplete) => {
-    if (didComplete) {
-      setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
+  const handleVerificationResponse = async (didComplete) => {
+    if (didComplete && verification.action) {
+      // Increment points for the current logged-in user only
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4000/api/update-points', {
+          userId: currentUser._id, // Use the logged-in user's ID
+          action: verification.action,
+        }, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        // Update the current user's points locally after success
+        setCurrentUser(response.data); // Use the updated user data from the response
+        setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
+      } catch (error) {
+        console.error('Error updating points:', error);
+      }
     }
     setVerification({ action: '', isVisible: false });
   };
@@ -95,15 +120,15 @@ const Featured = () => {
       <div className="featured-inner">
         {/* Left Section */}
         <div className="left-section">
-        <AccountCircleIcon style={{ fontSize: '10rem', color: '#CCA43B' }} />
+          <AccountCircleIcon style={{ fontSize: '10rem', color: '#CCA43B' }} />
           
           <div className="points-container">
-          <h3 className="username">{featuredUser.username}</h3>
+            <h3 className="username">{featuredUser.username}</h3>
             <div className="points-box">
-              <p className="points-text">Daily Points: <span className="points-count">7</span></p>
+              <p className="points-text">Daily Points: <span className="points-count">{featuredUser.dailyPoints}</span></p>
             </div>
             <div className="points-box">
-              <p className="points-text">Total Points: <span className="points-count">12</span></p>
+              <p className="points-text">Total Points: <span className="points-count">{featuredUser.totalPoints}</span></p>
             </div>
           </div>
         </div>
@@ -152,7 +177,6 @@ const Featured = () => {
             >
               {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
             </button>
-            
           </div>
         </div>
       </div>

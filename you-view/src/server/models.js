@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Add this line
 
 // User schema definition
 const userSchema = new mongoose.Schema({
@@ -20,8 +20,16 @@ const userSchema = new mongoose.Schema({
   },
   featuredVideoId: {
     type: String,
-    required: false, // This is already optional
+    required: false, // Optional
     unique: false,
+  },
+  dailyPoints: {
+    type: Number,
+    default: 0,
+  },
+  totalPoints: {
+    type: Number,
+    default: 0,
   },
 });
 
