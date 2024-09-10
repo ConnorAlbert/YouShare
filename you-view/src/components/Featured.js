@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import axios from 'axios';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
@@ -14,7 +15,7 @@ const extractVideoId = (url) => {
   }
 };
 
-const Featured = ({ updateHeaderPoints }) => { // updateHeaderPoints function to update the Header
+const Featured = ({ updateHeaderPoints }) => {
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
   const [progressWidth, setProgressWidth] = useState(0);
   const [verification, setVerification] = useState({ action: '', isVisible: false });
@@ -22,6 +23,7 @@ const Featured = ({ updateHeaderPoints }) => { // updateHeaderPoints function to
   const [featuredUser, setFeaturedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null); // Store the current user's data
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Instantiate the useNavigate hook
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -30,6 +32,12 @@ const Featured = ({ updateHeaderPoints }) => { // updateHeaderPoints function to
       try {
         const token = localStorage.getItem('token');
         
+        // Check if the user is logged in by checking the token
+        if (!token) {
+          navigate('/login'); // Redirect to login if no token is found
+          return;
+        }
+
         // Fetch the featured user
         const featuredResponse = await axios.get('http://localhost:4000/api/random-featured-user', {
           headers: { Authorization: `Bearer ${token}` },
@@ -57,6 +65,7 @@ const Featured = ({ updateHeaderPoints }) => { // updateHeaderPoints function to
       } catch (error) {
         if (error.response?.status === 401) {
           alert('Unauthorized. Please log in again.');
+          navigate('/login'); // Redirect to login if unauthorized
         } else {
           console.error('Error fetching data:', error);
         }
@@ -66,7 +75,7 @@ const Featured = ({ updateHeaderPoints }) => { // updateHeaderPoints function to
     };
 
     fetchData();
-  }, [apiKey]);
+  }, [apiKey, navigate]);
 
   useEffect(() => {
     const selectedCount = Object.values(checkboxes).filter(Boolean).length;
