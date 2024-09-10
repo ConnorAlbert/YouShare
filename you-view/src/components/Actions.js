@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import YouTubeImage from '../assets/Images/youtubepage.jpg'; // Import your YouTube image
+import TwitchImage from '../assets/Images/twitchpage.jpg'; // Import your Twitch image
 
 const Actions = ({ addXp }) => {
   const navigate = useNavigate();
   const [videoId, setVideoId] = useState('');
 
-  // Extract video ID from YouTube URL
   const extractVideoId = (url) => {
     try {
-      // Check if the URL is a valid string
       if (typeof url !== 'string' || !url) {
         console.error('Invalid URL format:', url);
         return null;
       }
-
-      // Ensure URL is valid
       const videoUrl = new URL(url);
-
-      // Check for 'youtu.be' format
       if (videoUrl.hostname === 'youtu.be') {
         return videoUrl.pathname.split('/')[1];
       }
-
-      // Check for 'youtube.com/watch' format
       if (videoUrl.hostname === 'www.youtube.com' && videoUrl.pathname === '/watch') {
         return videoUrl.searchParams.get('v');
       }
-
       return null;
     } catch (error) {
       console.error('Error parsing URL:', error);
@@ -35,11 +28,10 @@ const Actions = ({ addXp }) => {
     }
   };
 
-  // Fetch current user's video ID when the component mounts
   useEffect(() => {
     const fetchCurrentVideo = async () => {
       try {
-        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+        const token = localStorage.getItem('token');
         const response = await axios.get('http://localhost:4000/api/current-featured-video', {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -54,19 +46,18 @@ const Actions = ({ addXp }) => {
     fetchCurrentVideo();
   }, []);
 
-  // Handle linking a new video
   const handleLinkVideo = async () => {
     const videoUrl = prompt("Please enter the YouTube video URL:");
     if (videoUrl) {
       const newVideoId = extractVideoId(videoUrl);
       if (newVideoId) {
         try {
-          const token = localStorage.getItem('token'); // Retrieve token from localStorage
+          const token = localStorage.getItem('token');
           await axios.post('http://localhost:4000/api/update-featured-video', 
             { videoId: newVideoId }, 
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          setVideoId(newVideoId); // Update local state
+          setVideoId(newVideoId);
         } catch (error) {
           console.error('Error updating featured video:', error);
         }
@@ -85,7 +76,7 @@ const Actions = ({ addXp }) => {
     alignItems: 'center',
   };
 
-  const iframeStyle = {
+  const imgStyle = {
     width: '100%',
     height: '100%',
     position: 'absolute',
@@ -120,7 +111,7 @@ const Actions = ({ addXp }) => {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                style={iframeStyle}
+                style={imgStyle}
               />
             </div>
           ) : (
@@ -138,38 +129,33 @@ const Actions = ({ addXp }) => {
           )}
         </div>
 
-        {/* Section 1: View */}
+        {/* Section 1: View - YouTube Image */}
         <div
           style={sectionStyle}
           onClick={() => navigate('/viewPage')}
         >
-          <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10 }}>YouTube</h3>
-          <div style={{ position: 'relative', width: '60%', height: '200px' }}>
-            <iframe
-              src={`https://www.youtube.com/embed/hQrmtwhztnc`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={iframeStyle}
+          <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10 }}>Gain points now.</h3>
+          <div style={{ position: 'relative', width: '50%', height: '200px' }}>
+            <img
+              src={YouTubeImage} // Use the imported image
+              alt="YouTube Page"
+              style={imgStyle}
             />
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 2.5, fontSize: 20 }}>
-            1.6<span role="img" aria-label="Spark Emoji">⚡️</span>
           </div>
         </div>
 
-        {/* Section 2: Twitch */}
+        {/* Section 2: Twitch Image */}
         <div
           style={sectionStyle}
           onClick={() => addXp(2.3)}
         >
           <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10 }}>Twitch</h3>
-          <div style={{ textAlign: 'center', width: '60%', height: '200px', backgroundColor: 'lightgray' }}>
-            <h1 style={{ backgroundColor: 'red', marginTop: '75px' }}>COMING SOON</h1>
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 2.5, fontSize: 20 }}>
-            0.5<span role="img" aria-label="Star Emoji">⭐</span>
+          <div style={{ position: 'relative', width: '50%', height: '200px' }}>
+            <img
+              src={TwitchImage} // Use the imported Twitch image
+              alt="Twitch Page"
+              style={imgStyle}
+            />
           </div>
         </div>
       </div>
