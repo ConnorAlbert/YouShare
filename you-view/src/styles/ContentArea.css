@@ -1,0 +1,179 @@
+/* ContentArea.css */
+.contentarea-container {
+    height: 100%;
+    background-color: #272727;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contentarea-inner {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .contentarea-left-section {
+    width: 22.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+    padding: 20px;
+    margin-top: 50px;
+  }
+  
+  .contentarea-username {
+    margin: 10px 0;
+    margin-bottom: 25px;
+    color: #CCA43B;
+    text-align: center;
+    font-size: 45px;
+  }
+  
+  .contentarea-points-box {
+    background-color: #333;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .contentarea-points-text {
+    margin: 0;
+    color: white;
+    font-size: 20px;
+  }
+  
+  .contentarea-points-count {
+    font-weight: bold;
+    font-size: 24px;
+  }
+  
+  .contentarea-middle-section {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2%;
+  }
+  
+  .contentarea-title {
+    margin-top: 0;
+    text-align: center;
+    color: #CCA43B;
+    padding-top: 10px;
+  }
+  .contentarea-button-title {
+    margin-top: 0;
+    text-align: center;
+    color: #CCA43B;
+    padding-top: 10px;
+    margin-left: 23%;
+  }
+  
+  .contentarea-video-container {
+    width: 100%;
+    height: 400px;
+    background-color: rgb(0, 0, 0);
+  }
+  
+  .contentarea-right-section {
+    width: 22.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    justify-content: center;
+    margin-right: 5%;
+    margin-top: 5%;
+  }
+  
+  .contentarea-actions-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contentarea-button {
+    padding: 12px 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  .contentarea-buttonLike {
+    background-color: #4C8BF5;
+    padding-top: 5px;
+  }
+  
+  .contentarea-buttonLiked {
+    background-color: #28A745;
+    cursor: not-allowed;
+  }
+  
+  .contentarea-buttonComment {
+    background-color: #F1C40F;
+  }
+  
+  .contentarea-buttonCommented {
+    background-color: #28A745;
+    cursor: not-allowed;
+  }
+  
+  .contentarea-buttonSubscribe {
+    background-color: #E74C3C;
+  }
+  
+  .contentarea-buttonSubscribed {
+    background-color: #28A745;
+    cursor: not-allowed;
+  }
+  
+  .contentarea-modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .contentarea-modal {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    width: 350px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contentarea-modalButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  .contentarea-modalButtonConfirm {
+    background-color: #28a745;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contentarea-modalButtonClose {
+    background-color: #dc3545;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  

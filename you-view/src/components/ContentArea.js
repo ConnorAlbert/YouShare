@@ -1,89 +1,214 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import '../styles/ContentArea.css'; // Use ContentArea-specific styles
 
-function ContentArea({ onPlaybackStateChange, setProgress, currentVideo }) {
+const extractVideoId = (url) => {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname === 'youtu.be' ? urlObj.pathname.split('/')[1] : urlObj.searchParams.get('v');
+  } catch (error) {
+    console.error('Invalid URL:', error);
+    return null;
+  }
+};
+
+const ContentArea = ({ updateHeaderPoints }) => {
+  const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
+  const [progressWidth, setProgressWidth] = useState(0);
+  const [verification, setVerification] = useState({ action: '', isVisible: false });
+  const [channelId, setChannelId] = useState('');
+  const [featuredUser, setFeaturedUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const playerRef = useRef(null);
-  const [playing,setPlaying]= useState(false);
-  let intervalId = null; // Identifier of the interval for cleaning up later
+
+  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
-    if (playerRef.current) {
-      const player = new window.YT.Player(playerRef.current, {
-        videoId: getVideoId(currentVideo),
-        events: {
-          onStateChange: onPlayerStateChange,
-          onProgress: onPlayerProgress,
-        },
-      });
-    }
-  }, [currentVideo]);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        // Fetch the featured user
+        const featuredResponse = await axios.get('http://localhost:4000/api/random-featured-user', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  const getVideoId = (videoUrl) => {
-    const url = new URL(videoUrl);
-    const searchParams = new URLSearchParams(url.search);
-    return searchParams.get('v');
-  };
-
-
-  const onPlayerStateChange = (event) => {
-      if (event.data === window.YT.PlayerState.PLAYING) {
-          console.log('Playing');
-          // Clear previous interval if it exists
-          if (intervalId) {
-              clearInterval(intervalId);
+        setFeaturedUser(featuredResponse.data);
+        if (featuredResponse.data.featuredVideoId) {
+          const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
+          if (videoId) {
+            const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
+            const videoData = await videoResponse.json();
+            
+            if (videoData.items?.length) {
+              setChannelId(videoData.items[0].snippet.channelId);
+            }
           }
-          // Call onPlayerProgress to update the progress immediately
-          onPlayerProgress(event);
-  
-          // Start new interval to call onPlayerProgress every second
-          intervalId = setInterval(() => {
-              onPlayerProgress(event);
-          }, 1000);
-  
-          onPlaybackStateChange(true); // Notify the parent component that video playback started
-      } else if (event.data === window.YT.PlayerState.PAUSED) {
-          console.log('Paused');
-  
-          // Clear the interval when the video is paused
-          if (intervalId) {
-              clearInterval(intervalId);
-              intervalId = null;
-          }
-  
-          onPlaybackStateChange(false); // Notify the parent component that video playback paused
+        }
+
+        // Fetch the current logged-in user's data
+        const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCurrentUser(currentUserResponse.data);
+
+      } catch (error) {
+        if (error.response?.status === 401) {
+          alert('Unauthorized. Please log in again.');
+        } else {
+          console.error('Error fetching data:', error);
+        }
+      } finally {
+        setLoading(false);
       }
-  };
-  
+    };
 
-  const onPlayerProgress = (event) => {
-    const currentTime = event.target.getCurrentTime();
-    const duration = event.target.getDuration();
-    const calculatedProgress = (currentTime / duration) * 100;
-    setProgress(calculatedProgress);
+    fetchData();
+  }, [apiKey]);
+
+  useEffect(() => {
+    const selectedCount = Object.values(checkboxes).filter(Boolean).length;
+    const totalCheckboxes = Object.values(checkboxes).length;
+    setProgressWidth((selectedCount / totalCheckboxes) * 100);
+  }, [checkboxes]);
+
+  const handleActionClick = (action) => {
+    if (featuredUser?.featuredVideoId) {
+      const videoId = extractVideoId(featuredUser.featuredVideoId);
+      const url = action === 'subscribe' && channelId
+        ? `https://www.youtube.com/channel/${channelId}`
+        : `https://www.youtube.com/watch?v=${videoId}`;
+
+      if (url) {
+        window.open(url, '_blank');
+        setVerification({ action, isVisible: true });
+      }
+    } else {
+      alert('No video associated with the featured user.');
+    }
   };
+
+  const handleVerificationResponse = async (didComplete) => {
+    if (didComplete && verification.action) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4000/api/update-points', {
+          userId: currentUser._id, // Use the logged-in user's ID
+          action: verification.action,
+        }, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        // Update the current user's points locally after success
+        const updatedUser = response.data;
+        setCurrentUser(updatedUser); // Update the current user's points locally
+        setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
+
+        // Pass the updated points to the Header for real-time updates
+        updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
+
+      } catch (error) {
+        console.error('Error updating points:', error);
+      }
+    }
+    setVerification({ action: '', isVisible: false });
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (!featuredUser) return <p>No featured user found</p>;
 
   return (
-    <div style={{ flex: 4, backgroundColor: '#242F40', display: 'flex', flexDirection: 'row', color: 'white' }}>
-      <div style={{ flex: '0 0 20%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <button style={{ marginBottom: '10px', cursor: 'pointer', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '15px 30px' }}>
-          <ThumbUpAltOutlinedIcon style={{ fontSize: '28px', marginRight: '5px' }} />
-          <span>Like</span>
-        </button>
-        <div style={{ marginBottom: '70px', fontSize: '24px' }}>2.4✨</div>
-        <button style={{ marginTop: '70px', cursor: 'pointer', backgroundColor: 'rgb(231 14 23)', color: 'white', border: 'none', borderRadius: '5px', fontSize: '24px', padding: '15px 30px' }}>Subscribe</button>
-        <div style={{ marginTop: '10px', fontSize: '24px' }}>4✨</div>
+    <div className="contentarea-container">
+      <div className="contentarea-inner">
+        {/* Left Section */}
+        <div className="contentarea-left-section">
+          <AccountCircleIcon style={{ fontSize: '10rem', color: '#CCA43B' }} />
+          
+          <div className="points-container">
+            <h3 className="username">{featuredUser.username}</h3>
+            <div className="points-box">
+              <p className="points-text">Daily Points: <span className="points-count">{featuredUser.dailyPoints}</span></p>
+            </div>
+            <div className="points-box">
+              <p className="points-text">Total Points: <span className="points-count">{featuredUser.totalPoints}</span></p>
+            </div>
+          </div>
+        </div>
+
+        {/* Middle Section */}
+        <div className="contentarea-middle-section">
+          <h2 className="contentarea-title">Featured Video</h2>
+          <div className="contentarea-video-container">
+            {featuredUser.featuredVideoId && (
+              <iframe
+                width="100%"
+                height="400px"
+                src={`https://www.youtube.com/embed/${extractVideoId(featuredUser.featuredVideoId)}?`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen>
+              </iframe>
+            )}
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className="contentarea-right-section">
+          <h2 className="contentarea-button-title">Actions</h2>
+          <div className="contentarea-actions-container">
+            <button
+              className={`button contentarea-buttonLike ${checkboxes.like ? 'contentarea-buttonLiked' : ''}`}
+              onClick={() => handleActionClick('like')}
+              disabled={checkboxes.like}
+            >
+              <ThumbUpAltOutlinedIcon style={{ marginRight: '10px' }} />
+              {checkboxes.like ? 'Liked' : 'Like'}
+            </button>
+            <button
+              className={`button contentarea-buttonComment ${checkboxes.comment ? 'contentarea-buttonCommented' : ''}`}
+              onClick={() => handleActionClick('comment')}
+              disabled={checkboxes.comment}
+            >
+              {checkboxes.comment ? 'Commented' : 'Comment'}
+            </button>
+            <button
+              className={`button contentarea-buttonSubscribe ${checkboxes.subscribe ? 'contentarea-buttonSubscribed' : ''}`}
+              onClick={() => handleActionClick('subscribe')}
+              disabled={checkboxes.subscribe}
+            >
+              {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
+            </button>
+          </div>
+        </div>
       </div>
-      <div style={{ flex: '0 0 60%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div ref={playerRef} style={{ width: '100%', height: '90%' }}></div>
-      </div>
-      <div style={{ flex: '0 0 20%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ marginBottom: '10px', fontSize: '24px' }}>Add a comment</div>
-        <textarea placeholder="Type a constructive comment and publish it to earn ✨" style={{ backgroundColor: '#363636', marginBottom: '10px', width: '80%', height: '25%', resize: 'none', padding: '10px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '5px', color: 'white' }} />
-        <button style={{ marginTop: '10px', cursor: 'pointer', backgroundColor: '#CCA43B', color: 'white', border: 'none', borderRadius: '5px', fontSize: '24px', padding: '15px 30px' }}>Publish</button>
-        <div style={{ marginTop: '10px', fontSize: '24px' }}>3.2✨</div>
-      </div>
+
+      {/* Verification Modal */}
+      {verification.isVisible && (
+        <div className="contentarea-modalOverlay">
+          <div className="contentarea-modal">
+            <h2>{verification.action.charAt(0).toUpperCase() + verification.action.slice(1)} Verification</h2>
+            <p>Did you complete the action?</p>
+            <button
+              className="contentarea-modalButton contentarea-modalButtonConfirm"
+              onClick={() => handleVerificationResponse(true)}
+            >
+              Yes
+            </button>
+            <button
+              className="contentarea-modalButton contentarea-modalButtonClose"
+              onClick={() => handleVerificationResponse(false)}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default ContentArea;
