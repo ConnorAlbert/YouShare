@@ -14,7 +14,7 @@ const extractVideoId = (url) => {
   }
 };
 
-const Featured = () => {
+const Featured = ({ updateHeaderPoints }) => { // updateHeaderPoints function to update the Header
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
   const [progressWidth, setProgressWidth] = useState(0);
   const [verification, setVerification] = useState({ action: '', isVisible: false });
@@ -92,7 +92,6 @@ const Featured = () => {
 
   const handleVerificationResponse = async (didComplete) => {
     if (didComplete && verification.action) {
-      // Increment points for the current logged-in user only
       try {
         const token = localStorage.getItem('token');
         const response = await axios.post('http://localhost:4000/api/update-points', {
@@ -103,8 +102,13 @@ const Featured = () => {
         });
 
         // Update the current user's points locally after success
-        setCurrentUser(response.data); // Use the updated user data from the response
+        const updatedUser = response.data;
+        setCurrentUser(updatedUser); // Update the current user's points locally
         setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
+
+        // Pass the updated points to the Header for real-time updates
+        updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
+
       } catch (error) {
         console.error('Error updating points:', error);
       }

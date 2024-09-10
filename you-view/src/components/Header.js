@@ -1,119 +1,117 @@
-import React, { useState, useEffect, useRef } from 'react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import React, { useState, useEffect } from 'react';
 import SidebarContent from './SidebarContent';
-import HeaderContent from '../components/HeaderContent'
+import HeaderContent from '../components/HeaderContent';
+import axios from 'axios';
+import '../styles/Header.css'; // Updated to reflect the unique CSS file name
 
-
-
-
-
-const Header = ({ level, xp, handleSidebarToggle }) => {
+const Header = ({ handleSidebarToggle, updatedPoints }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // New state
+  const [isHovered, setIsHovered] = useState(false);
+  const [currentUser, setCurrentUser] = useState({ username: '', dailyPoints: 0, totalPoints: 0, level: 1 });
+  const [xp, setXp] = useState(0); // XP progress bar
 
+  // Function to calculate level and XP dynamically
+  const calculateLevelAndXP = (totalPoints) => {
+    const level = Math.floor(totalPoints / 5); // Level up every 5 points
+    const xpProgress = (totalPoints % 5) * 20; // XP progress as a percentage for next level (20% per point)
+    return { level, xpProgress };
+  };
 
+  // Fetch current logged-in user's data from the backend
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+      const response = await axios.get('http://localhost:4000/api/current-user', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const { username, dailyPoints, totalPoints } = response.data; // Include username
+      const { level, xpProgress } = calculateLevelAndXP(totalPoints);
+
+      setCurrentUser({ username, dailyPoints, totalPoints, level });
+      setXp(xpProgress);
+
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData(); // Fetch data initially when component mounts
+
+    // Set up polling to fetch updated points every 10 seconds
+    const intervalId = setInterval(() => {
+      fetchUserData();
+    }, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId); // Clean up the interval on component unmount
+  }, []);
+
+  // Update points when "Yes" is confirmed from the featured page
+  useEffect(() => {
+    if (updatedPoints) {
+      setCurrentUser(prevUser => {
+        const updatedTotalPoints = prevUser.totalPoints + updatedPoints; // Adjust points based on the prop passed
+        const updatedDailyPoints = prevUser.dailyPoints + updatedPoints;
+        const { level, xpProgress } = calculateLevelAndXP(updatedTotalPoints);
+        setXp(xpProgress);
+
+        return { ...prevUser, totalPoints: updatedTotalPoints, dailyPoints: updatedDailyPoints, level };
+      });
+    }
+  }, [updatedPoints]); // Run whenever updatedPoints changes
 
   const toggleSidebar = () => {
     setSidebarOpen(prevSidebarOpen => !prevSidebarOpen);
     handleSidebarToggle();
   };
 
-
-  const styles = {
-    header: {
-      backgroundColor: '#363636',
-      minHeight: '10vh',
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center', // Center the content horizontally
-      color: 'white',
-    },
-    profile: {
-      width: '13.85%', // Match the width of the profile box
-      minHeight: '10vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      color: 'white',
-      paddingTop: '20px',
-      paddingBottom: '20px',
-      cursor: 'pointer',
-      backgroundColor: sidebarOpen ? '#242F40' : '#363636', 
-      borderTop: sidebarOpen ? '1px solid white' : isHovered ? '1px solid white' : '1px solid transparent',
-      borderLeft: sidebarOpen ? '1px solid white' : isHovered ? '1px solid white' : '1px solid transparent',
-      borderRight: sidebarOpen ? '1px solid white' : isHovered ? '1px solid white' : '1px solid transparent',
-      borderBottom: sidebarOpen ? '1px solid transparent' : isHovered ? '1px solid white' : '1px solid transparent',
-    },
-    icon: {
-      fontSize: '2.5rem',
-    },
-    expBar: {
-      width: '90%',
-      height: '10px',
-      backgroundColor: '#fff',
-      position: 'relative',
-    },
-    expLevel: {
-      position: 'absolute',
-      top: '-20px',
-      left: '0',
-    },
-    expLevelEnd: {
-      position: 'absolute',
-      top: '-20px',
-      right: '0',
-    },
-    expFill: {
-      height: '100%',
-      background: 'linear-gradient(to right, #ffb02e, #ff6723)',
-      transition: 'width 1s ease-in-out',
-    },
-    sidebar: {
-      position: 'fixed',
-      height: '85.4%',
-      right: '0',
-      width: '13.95%', // Match the width of the profile box
-      backgroundColor: '#363636',
-      transition: 'transform 0.3s ease-in-out',
-    },
-    profileName: {
-      fontSize: '1.5rem',
-      paddingBottom: '20px',
-    },
-  };
-
   return (
     <>
-      <header style={styles.header}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+      <header className="unique-header">
+        <div className="unique-header-container">
           <HeaderContent />
           <div 
-            style={styles.profile} 
+            className={`unique-profile ${sidebarOpen ? 'unique-sidebar-open' : ''} ${isHovered ? 'unique-hovered' : ''}`} 
             onClick={toggleSidebar}
-            onMouseEnter={() => setIsHovered(true)} // Add this line
-            onMouseLeave={() => setIsHovered(false)} // Add this line
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{
+              backgroundColor: sidebarOpen ? '#242f3f' : isHovered ? '#242f3f' : '#363636',
+              border: sidebarOpen || isHovered ? '1px solid white' : '1px solid transparent',
+            }}
           >
-            <AccountCircleIcon style={styles.icon} />
-            <div style={styles.profileName}>Profile</div>
+            
+            {/* Display logged-in user's username */}
+            <div className="unique-profile-name">{currentUser.username}</div>
+
+            {/* Points display (Daily and Total) */}
+            <div className="unique-points-container">
+              <div className="unique-points-box">
+                <p className="unique-points-daily">Daily Points: <span className="unique-points-count">{currentUser.dailyPoints}</span></p>
+              </div>
+              <div className="unique-points-box">
+                <p className="unique-points-total">Total Points: <span className="unique-points-count">{currentUser.totalPoints}</span></p>
+              </div>
+            </div>
+
+            {/* Level and XP bar */}
             {!sidebarOpen && (
-              <div style={styles.expBar}>
-                <span style={styles.expLevel}>🔥{level}</span>
-                <div style={{ ...styles.expFill, width: `${xp}%` }}></div>
-                <span style={styles.expLevelEnd}>🔥{level + 1}</span>
+              <div className="unique-exp-bar">
+                <span className="unique-exp-level">🔥{currentUser.level}</span>
+                <div className="unique-exp-fill" style={{ width: `${xp}%` }}></div>
+                <span className="unique-exp-level-end">🔥{currentUser.level + 1}</span>
               </div>
             )}
           </div>
         </div>
       </header>
       {/* Sidebar */}
-      <div style={{ ...styles.sidebar, transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)' }}>
-        <SidebarContent level={level} xp={xp} />
+      <div className={`unique-sidebar ${sidebarOpen ? 'unique-open' : ''}`}>
+        <SidebarContent level={currentUser.level} xp={xp} />
       </div>
     </>
   );
 };
-
 
 export default Header;

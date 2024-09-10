@@ -168,7 +168,7 @@ const SidebarContent = ({ level, xp }) => {
           <div style={styles.xpFill}></div>
           {shouldShowLevel && (
             <div style={styles.levelUp}>
-              <h3>🔥{level + 1}</h3>
+            
             </div>
           )}
           <div style={styles.currentLevel}>

@@ -6,6 +6,7 @@ import Home from './components/Home';
 import ViewPage from './components/ViewPage';
 
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { UserProvider } from './server/UserContext'; // Import UserProvider
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql', // Replace with your GraphQL endpoint
@@ -15,16 +16,18 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <div>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/viewPage" element={<ViewPage />} />
-          </Routes>
-        </div>
-      </Router>
+      <UserProvider> {/* Wrap your app with UserProvider */}
+        <Router>
+          <div>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/viewPage" element={<ViewPage />} />
+            </Routes>
+          </div>
+        </Router>
+      </UserProvider>
     </ApolloProvider>
   );
 };
