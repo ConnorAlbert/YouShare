@@ -1,0 +1,126 @@
+/* Unique styles for SidebarContent */
+.sidebar-container {
+    background-color: #242f40;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+  }
+  
+  .sidebar-levelXp {
+    text-align: center;
+    color: white;
+  }
+  
+  .sidebar-levelEmoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .sidebar-levelLabel {
+    margin-right: 5px;
+  }
+  
+  .sidebar-xpBar {
+    height: 400px;
+    width: 40px;
+    background: #fff;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .sidebar-xpFill {
+    width: 100%;
+    background: linear-gradient(to right, #ffb02e, #ff6723);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: height 1s;
+  }
+  
+  .sidebar-levelUp {
+    position: absolute;
+    top: -20px;
+    color: black;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .sidebar-currentLevel {
+    position: absolute;
+    bottom: -45px;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .sidebar-linksContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+  }
+  
+  .sidebar-link {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .sidebar-button {
+    width: 200px;
+    height: 40px;
+    background-color: #3d4d57;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .sidebar-logoutButton {
+    width: 200px;
+    height: 40px;
+    background-color: red;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .sidebar-modalHeader {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    border-bottom: 1px solid #fff;
+  }
+  
+  .sidebar-modalHeaderLink {
+    cursor: pointer;
+    color: #fff;
+    padding: 10px 20px;
+    background-color: #242f40;
+    border-radius: 5px;
+    margin: 0 10px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar-modalHeaderLinkActive {
+    background-color: #536dfe;
+  }
+  
+  .sidebar-closeButton {
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 3em;
+    cursor: pointer;
+  }
+  
