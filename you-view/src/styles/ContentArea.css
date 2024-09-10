@@ -1,4 +1,8 @@
 /* ContentArea.css */
+
+body {
+  background-color: #363636;
+}
 .contentarea-container {
   height: 100%;
   background-color: #272727;

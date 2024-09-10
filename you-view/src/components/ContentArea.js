@@ -140,7 +140,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
 
         {/* Middle Section */}
         <div className="contentarea-middle-section">
-          <h2 className="contentarea-title">Featured Video</h2>
+          <h2 className="contentarea-title"></h2>
           <div className="contentarea-video-container">
             {featuredUser.featuredVideoId && (
               <iframe
