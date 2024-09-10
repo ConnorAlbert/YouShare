@@ -145,7 +145,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
             {featuredUser.featuredVideoId && (
               <iframe
                 width="100%"
-                height="400px"
+                height="500px"
                 src={`https://www.youtube.com/embed/${extractVideoId(featuredUser.featuredVideoId)}?`}
                 title="YouTube video player"
                 frameBorder="0"
@@ -158,30 +158,32 @@ const ContentArea = ({ updateHeaderPoints }) => {
 
         {/* Right Section */}
         <div className="contentarea-right-section">
-          <h2 className="contentarea-button-title">Actions</h2>
-          <div className="contentarea-actions-container">
-            <button
-              className={`button contentarea-buttonLike ${checkboxes.like ? 'contentarea-buttonLiked' : ''}`}
-              onClick={() => handleActionClick('like')}
-              disabled={checkboxes.like}
-            >
-              <ThumbUpAltOutlinedIcon style={{ marginRight: '10px' }} />
-              {checkboxes.like ? 'Liked' : 'Like'}
-            </button>
-            <button
-              className={`button contentarea-buttonComment ${checkboxes.comment ? 'contentarea-buttonCommented' : ''}`}
-              onClick={() => handleActionClick('comment')}
-              disabled={checkboxes.comment}
-            >
-              {checkboxes.comment ? 'Commented' : 'Comment'}
-            </button>
-            <button
-              className={`button contentarea-buttonSubscribe ${checkboxes.subscribe ? 'contentarea-buttonSubscribed' : ''}`}
-              onClick={() => handleActionClick('subscribe')}
-              disabled={checkboxes.subscribe}
-            >
-              {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
-            </button>
+          <div className="actions-wrapper">
+            <h2 className="actions-title">Actions</h2>
+            <div className="actions-container">
+              <button
+                className={`button contentarea-buttonLike ${checkboxes.like ? 'contentarea-buttonLiked' : ''}`}
+                onClick={() => handleActionClick('like')}
+                disabled={checkboxes.like}
+              >
+                <ThumbUpAltOutlinedIcon style={{ marginRight: '10px' }} />
+                {checkboxes.like ? 'Liked' : 'Like'}
+              </button>
+              <button
+                className={`button contentarea-buttonComment ${checkboxes.comment ? 'contentarea-buttonCommented' : ''}`}
+                onClick={() => handleActionClick('comment')}
+                disabled={checkboxes.comment}
+              >
+                {checkboxes.comment ? 'Commented' : 'Comment'}
+              </button>
+              <button
+                className={`button contentarea-buttonSubscribe ${checkboxes.subscribe ? 'contentarea-buttonSubscribed' : ''}`}
+                onClick={() => handleActionClick('subscribe')}
+                disabled={checkboxes.subscribe}
+              >
+                {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -70,6 +70,7 @@
   border: 3px solid #CCA43B; /* Gold border around the video */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add some shadow for depth */
+  margin-bottom: 20px;
 }
 
 .right-section {
@@ -77,61 +78,83 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: px;
   padding: 20px;
   justify-content: center;
   margin-right: 50px;
 }
 
+.actions-wrapper {
+  
+  
+  
+  
+  width: 65%;
+  max-width: 400px;
+  background-color: #333;
+  border-radius: 12px;
+  padding: 20px 10px; /* Add padding for more space */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+  margin-top: 20px;
+}
+
+.actions-title {
+  font-size: 24px;
+  color: #CCA43B;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .actions-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-right: 23%;
 }
 
 .button {
-  padding: 12px 12px;
+  width: 80%;
+  max-width: 200px; /* Set a max width for buttons */
+  padding: 12px;
   border: none;
   border-radius: 8px;
   color: white;
   font-size: 18px;
   font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s, opacity 0.3s;
   cursor: pointer;
   margin: 10px 0;
+  margin-right: 95px;
 }
 
 .button:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05);
 }
 
 .buttonLike {
   background-color: #4C8BF5;
-  padding-top: 5px;
 }
 
-.buttonLiked {
-  background-color: #28A745;
+.buttonLiked,
+.buttonCommented,
+.buttonSubscribed {
   cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .buttonComment {
   background-color: #F1C40F;
 }
 
-.buttonCommented {
-  background-color: #28A745;
-  cursor: not-allowed;
-}
-
 .buttonSubscribe {
   background-color: #E74C3C;
 }
 
-.buttonSubscribed {
-  background-color: #28A745;
+/* General style for disabled buttons */
+.button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .modalOverlay {

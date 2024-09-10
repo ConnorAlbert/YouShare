@@ -166,30 +166,32 @@ const Featured = ({ updateHeaderPoints }) => {
 
         {/* Right Section */}
         <div className="right-section">
-          <h2 className="title">Actions</h2>
-          <div className="actions-container">
-            <button
-              className={`button buttonLike ${checkboxes.like ? 'buttonLiked' : ''}`}
-              onClick={() => handleActionClick('like')}
-              disabled={checkboxes.like}
-            >
-              <ThumbUpAltOutlinedIcon style={{ marginRight: '10px' }} />
-              {checkboxes.like ? 'Liked' : 'Like'}
-            </button>
-            <button
-              className={`button buttonComment ${checkboxes.comment ? 'buttonCommented' : ''}`}
-              onClick={() => handleActionClick('comment')}
-              disabled={checkboxes.comment}
-            >
-              {checkboxes.comment ? 'Commented' : 'Comment'}
-            </button>
-            <button
-              className={`button buttonSubscribe ${checkboxes.subscribe ? 'buttonSubscribed' : ''}`}
-              onClick={() => handleActionClick('subscribe')}
-              disabled={checkboxes.subscribe}
-            >
-              {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
-            </button>
+          <div className="actions-wrapper">
+            <h2 className="actions-title">Actions</h2>
+            <div className="actions-container">
+              <button
+                className={`button buttonLike ${checkboxes.like ? 'buttonLiked' : ''}`}
+                onClick={() => handleActionClick('like')}
+                disabled={checkboxes.like}
+              >
+                <ThumbUpAltOutlinedIcon style={{ marginRight: '10px',}} />
+                {checkboxes.like ? 'Liked' : 'Like'}
+              </button>
+              <button
+                className={`button buttonComment ${checkboxes.comment ? 'buttonCommented' : ''}`}
+                onClick={() => handleActionClick('comment')}
+                disabled={checkboxes.comment}
+              >
+                {checkboxes.comment ? 'Commented' : 'Comment'}
+              </button>
+              <button
+                className={`button buttonSubscribe ${checkboxes.subscribe ? 'buttonSubscribed' : ''}`}
+                onClick={() => handleActionClick('subscribe')}
+                disabled={checkboxes.subscribe}
+              >
+                {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
+              </button>
+            </div>
           </div>
         </div>
       </div>

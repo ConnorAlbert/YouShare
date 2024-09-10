@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import YouTubeImage from '../assets/Images/youtubepage.jpg'; // Import your YouTube image
+import YouTubeImage from '../assets/Images/youtubelogo.jpg'; // Import your YouTube image
 import TwitchImage from '../assets/Images/twitchpage.jpg'; // Import your Twitch image
 
 const Actions = ({ addXp }) => {
