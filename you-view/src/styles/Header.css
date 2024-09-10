@@ -95,4 +95,17 @@
   .unique-sidebar.unique-open {
     transform: translateX(0);
   }
+  .unique-sidebar {
+    position: fixed;
+    height: 85.4%;
+    right: 0;
+    width: 13.95%;
+    background-color: #363636;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+    z-index: 1000; /* Ensure it's on top of other elements */
+  }
   
+  .unique-sidebar.unique-open {
+    transform: translateX(0);
+  }
