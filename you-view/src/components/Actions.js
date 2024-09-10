@@ -7,6 +7,9 @@ import TwitchImage from '../assets/Images/twitchpage.jpg'; // Import your Twitch
 const Actions = ({ addXp }) => {
   const navigate = useNavigate();
   const [videoId, setVideoId] = useState('');
+  const [hoverChangeVideo, setHoverChangeVideo] = useState(false); // State for Change Video hover
+  const [hoverYouTube, setHoverYouTube] = useState(false); // State for YouTube hover
+  const [hoverTwitch, setHoverTwitch] = useState(false); // State for Twitch hover
 
   const extractVideoId = (url) => {
     try {
@@ -70,11 +73,19 @@ const Actions = ({ addXp }) => {
   const sectionStyle = {
     flexBasis: '33%',
     borderRight: '2px solid black',
+    borderTop: '2px solid black',
     paddingRight: '10px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    transition: 'background-color 0.3s ease',
+    cursor: 'pointer',
   };
+
+  const hoverSectionStyle = (isHovered) => ({
+    ...sectionStyle,
+    backgroundColor: isHovered ? '#555' : '#363636', // Change background color on hover
+  });
 
   const imgStyle = {
     width: '100%',
@@ -95,6 +106,16 @@ const Actions = ({ addXp }) => {
     cursor: 'pointer',
     borderRadius: '5px',
     marginTop: '75px',
+  };
+
+  const changeVideoStyle = {
+    textAlign: 'center',
+    marginTop: 5,
+    fontSize: 18,
+    cursor: 'pointer',
+    color: hoverChangeVideo ? '#FF4500' : '#007BFF', // Hover effect color change
+    textDecoration: hoverChangeVideo ? 'none' : 'underline', // Remove underline on hover
+    transition: 'color 0.3s ease, text-decoration 0.3s ease', // Smooth transition
   };
 
   return (
@@ -121,7 +142,9 @@ const Actions = ({ addXp }) => {
           )}
           {videoId && (
             <div
-              style={{ textAlign: 'center', marginTop: 5, fontSize: 18, cursor: 'pointer', color: '#007BFF', textDecoration: 'underline' }}
+              style={changeVideoStyle}
+              onMouseEnter={() => setHoverChangeVideo(true)}  // Hover state for Change Video
+              onMouseLeave={() => setHoverChangeVideo(false)} // Reset hover state for Change Video
               onClick={handleLinkVideo}
             >
               Change Video
@@ -131,7 +154,9 @@ const Actions = ({ addXp }) => {
 
         {/* Section 1: View - YouTube Image */}
         <div
-          style={sectionStyle}
+          style={hoverSectionStyle(hoverYouTube)}
+          onMouseEnter={() => setHoverYouTube(true)}  // Hover state for YouTube
+          onMouseLeave={() => setHoverYouTube(false)} // Reset hover state for YouTube
           onClick={() => navigate('/viewPage')}
         >
           <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10 }}>Gain points now.</h3>
@@ -146,7 +171,9 @@ const Actions = ({ addXp }) => {
 
         {/* Section 2: Twitch Image */}
         <div
-          style={sectionStyle}
+          style={hoverSectionStyle(hoverTwitch)}
+          onMouseEnter={() => setHoverTwitch(true)}  // Hover state for Twitch
+          onMouseLeave={() => setHoverTwitch(false)} // Reset hover state for Twitch
           onClick={() => addXp(2.3)}
         >
           <h3 style={{ textAlign: 'center', marginTop: 10, marginBottom: 10 }}>Twitch</h3>
