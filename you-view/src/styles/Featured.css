@@ -98,6 +98,10 @@
   margin: 10px 0;
 }
 
+.button:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
 .buttonLike {
   background-color: #4C8BF5;
   padding-top: 5px;
