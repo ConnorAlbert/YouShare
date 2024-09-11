@@ -3,6 +3,7 @@ import axios from 'axios';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import Footer from './Footer'; // Import Footer
+import YouTube from 'react-youtube'; // Import YouTube component
 import '../styles/ContentArea.css'; // Use ContentArea-specific styles
 
 // Updated extractVideoId function
@@ -35,13 +36,13 @@ const extractVideoId = (input) => {
 
 const ContentArea = ({ updateHeaderPoints }) => {
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
-  const [progressWidth, setProgressWidth] = useState(0);
+  const [progressWidth, setProgressWidth] = useState(0); // Track video progress
   const [verification, setVerification] = useState({ action: '', isVisible: false });
   const [channelId, setChannelId] = useState('');
   const [featuredUser, setFeaturedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const playerRef = useRef(null);
+  const playerRef = useRef(null); // Reference to YouTube player
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -89,11 +90,20 @@ const ContentArea = ({ updateHeaderPoints }) => {
     fetchRandomUser();
   }, [apiKey]);
 
-  useEffect(() => {
-    const selectedCount = Object.values(checkboxes).filter(Boolean).length;
-    const totalCheckboxes = Object.values(checkboxes).length;
-    setProgressWidth((selectedCount / totalCheckboxes) * 100);
-  }, [checkboxes]);
+  const handleVideoStateChange = (event) => {
+    if (event.data === 1) {
+      const interval = setInterval(() => {
+        const duration = event.target.getDuration();
+        const currentTime = event.target.getCurrentTime();
+        const progress = (currentTime / duration) * 100;
+        setProgressWidth(progress);
+      }, 1000); // Update progress every second
+
+      playerRef.current = interval;
+    } else {
+      clearInterval(playerRef.current);
+    }
+  };
 
   const handleActionClick = (action) => {
     if (featuredUser?.featuredVideoId) {
@@ -140,6 +150,8 @@ const ContentArea = ({ updateHeaderPoints }) => {
   if (loading) return <p>Loading...</p>;
   if (!featuredUser) return <p>No featured user found</p>;
 
+  const videoId = extractVideoId(featuredUser.featuredVideoId);
+
   return (
     <div className="contentarea-container">
       <div className="contentarea-inner">
@@ -162,16 +174,12 @@ const ContentArea = ({ updateHeaderPoints }) => {
         <div className="contentarea-middle-section">
           <h2 className="contentarea-title"></h2>
           <div className="contentarea-video-container">
-            {featuredUser.featuredVideoId && (
-              <iframe
-                width="100%"
-                height="500px"
-                src={`https://www.youtube.com/embed/${extractVideoId(featuredUser.featuredVideoId)}?`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen>
-              </iframe>
+            {videoId && (
+              <YouTube
+                videoId={videoId}
+                opts={{ height: '500', width: '100%' }}
+                onStateChange={handleVideoStateChange}
+              />
             )}
           </div>
         </div>
