@@ -49,9 +49,9 @@ function ViewPage() {
     <div style={styles.container}>
     <div style={styles.mainContent}>
       <Header level={level} xp={xp} handleSidebarToggle={handleSidebarToggle} /> 
-      <div style={{ display: 'flex', flexDirection: 'column', height: '84.5%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '84.5%'  }}>
         <ContentArea onPlaybackStateChange={handlePlaybackStateChange} setProgress={setProgress} currentVideo= {currentVideo} />
-        <Footer style={styles.footer} isVideoPlaying={isVideoPlaying} progress={progress} sidebarOpening={sidebarOpen} />
+        
       </div>
     </div>
   </div>

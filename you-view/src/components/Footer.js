@@ -4,37 +4,39 @@ import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOu
 import { useNavigate } from 'react-router-dom';
 import CheckpointProgressBar from './CheckpointProgressBar';
 
-function Footer({ isVideoPlaying, progress, sidebarOpening }) {
+function Footer({ isVideoPlaying, progress, sidebarOpening, fetchRandomUser }) {
   const navigate = useNavigate();
 
   const footerStyle = {
-    flex: 1, 
-    width: sidebarOpening ? '100%' : '86.1%',
-    backgroundColor: '#363636', 
-    display: 'flex', 
-    flexDirection: 'column', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
+    width: sidebarOpening ? '85%' : '100%',
+    height: '81px', // Make the footer shorter
+    backgroundColor: '#333', // Updated background color
+    display: 'flex',
+    alignItems: 'center', // Center vertically
+    justifyContent: 'space-between', // Spread items horizontally
+    padding: ' 35px', // Adjust padding to fit inside the shorter footer
     color: 'white',
-    transition: 'width 0.3s ease-in-out'
+    transition: 'width 0.3s ease-in-out',
+    marginTop: '45px'
+  };
+
+  const iconStyle = {
+    fontSize: '7em', // Keep icon size large
+    cursor: 'pointer',
   };
 
   return (
     <div style={footerStyle}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-        <div onClick={() => navigate('/home')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '50px' }}>
-          <ArrowCircleLeftOutlinedIcon style={{ color: 'white', fontSize: '7em',cursor: 'pointer',
- }} />
-          <div>Home</div>
-        </div>
-        <div style={{ flex: 1, padding: '0 100px' }}>
-          <CheckpointProgressBar value={progress} />
-        </div>
-        <div onClick={() => console.log('Next Video')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingRight: '50px' }}>
-          <ArrowCircleRightOutlinedIcon style={{ color: 'white', fontSize: '7em',cursor: 'pointer',
- }} />
-          <div>Next</div>
-        </div>
+      <div onClick={() => navigate('/home')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <ArrowCircleLeftOutlinedIcon style={iconStyle} />
+        <div>Home</div>
+      </div>
+      <div style={{ flex: 1, padding: '0 50px' }}>
+        <CheckpointProgressBar value={progress} />
+      </div>
+      <div onClick={fetchRandomUser} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <ArrowCircleRightOutlinedIcon style={iconStyle} />
+        <div>Next</div>
       </div>
     </div>
   );
