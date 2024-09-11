@@ -110,7 +110,7 @@ input, textarea {
   color: white;
   cursor: pointer;
   background-color: #242f40;
-  margin-top: 20px;
+  margin-top: 5px !important;
   margin-bottom: 20px;
   margin-left: 25%;
 }
