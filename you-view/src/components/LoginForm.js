@@ -68,12 +68,7 @@ const LoginForm = ({ login, loginLoading, onLoginSuccess, onSignupClick, googleL
         Sign Up
       </button>
       <div className='google'>
-        <GoogleButton
-          onClick={googleLogin}
-          className="googleLoginButton"
-        >
-          Login with Google
-        </GoogleButton>
+        
       </div>
     </>
   );

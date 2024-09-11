@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
-import GoogleButton from 'react-google-button';
+// import GoogleButton from 'react-google-button'; // Commented out for now
 import LoginForm from './LoginForm';
 import SignupModal from './SignupModal';
 import '../styles/LoginPage.css';
@@ -41,9 +41,9 @@ const LoginPage = () => {
     navigate('/home');
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:4000/api/auth/google';
-  };
+  // const handleGoogleLogin = () => {
+  //   window.location.href = 'http://localhost:4000/api/auth/google';
+  // };
 
   return (
     <div className="loginPage">
@@ -57,7 +57,7 @@ const LoginPage = () => {
             loginLoading={loginLoading}
             onLoginSuccess={handleLoginSuccess}
             onSignupClick={() => setShowSignupModal(true)}
-            googleLogin={handleGoogleLogin}
+            // googleLogin={handleGoogleLogin} // Commented out for now
           />
         </div>
       </div>
