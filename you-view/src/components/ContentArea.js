@@ -6,28 +6,19 @@ import Footer from './Footer'; // Import Footer
 import YouTube from 'react-youtube'; // Import YouTube component
 import '../styles/ContentArea.css'; // Use ContentArea-specific styles
 
-// Updated extractVideoId function
 const extractVideoId = (input) => {
   try {
-    // If the input is already just a video ID (no "http" or "www"), return it as-is
     if (!input.startsWith('http')) {
       return input;
     }
-
-    // Parse the input as a URL
     const videoUrl = new URL(input);
-
-    // Handle YouTube short URLs (https://youtu.be/videoId)
     if (videoUrl.hostname === 'youtu.be') {
       return videoUrl.pathname.split('/')[1];
     }
-
-    // Handle standard YouTube URLs (https://www.youtube.com/watch?v=videoId)
     if (videoUrl.hostname === 'www.youtube.com' && videoUrl.pathname === '/watch') {
       return videoUrl.searchParams.get('v');
     }
-
-    return null; // Return null if the URL doesn't match expected formats
+    return null;
   } catch (error) {
     console.error('Invalid URL:', error);
     return null;
@@ -36,13 +27,15 @@ const extractVideoId = (input) => {
 
 const ContentArea = ({ updateHeaderPoints }) => {
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
-  const [progressWidth, setProgressWidth] = useState(0); // Track video progress
+  const [progressWidth, setProgressWidth] = useState(0);
   const [verification, setVerification] = useState({ action: '', isVisible: false });
   const [channelId, setChannelId] = useState('');
   const [featuredUser, setFeaturedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const playerRef = useRef(null); // Reference to YouTube player
+  const playerRef = useRef(null);
+  const [lastWatchedTime, setLastWatchedTime] = useState(0); // Track last watched time
+  const [playerInstance, setPlayerInstance] = useState(null);
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -50,31 +43,24 @@ const ContentArea = ({ updateHeaderPoints }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      
-      // Fetch the featured user
       const featuredResponse = await axios.get('http://localhost:4000/api/random-featured-user', {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setFeaturedUser(featuredResponse.data);
       const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
       if (videoId) {
         const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
         const videoData = await videoResponse.json();
-        
         if (videoData.items?.length) {
           setChannelId(videoData.items[0].snippet.channelId);
         }
       } else {
         console.error('No valid video ID found');
       }
-
-      // Fetch the current logged-in user's data
       const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCurrentUser(currentUserResponse.data);
-
     } catch (error) {
       if (error.response?.status === 401) {
         alert('Unauthorized. Please log in again.');
@@ -90,18 +76,31 @@ const ContentArea = ({ updateHeaderPoints }) => {
     fetchRandomUser();
   }, [apiKey]);
 
-  const handleVideoStateChange = (event) => {
-    if (event.data === 1) {
+  // Continuously check the current time and reset if needed
+  useEffect(() => {
+    if (playerInstance) {
       const interval = setInterval(() => {
-        const duration = event.target.getDuration();
-        const currentTime = event.target.getCurrentTime();
-        const progress = (currentTime / duration) * 100;
-        setProgressWidth(progress);
-      }, 1000); // Update progress every second
+        const currentTime = playerInstance.getCurrentTime();
+        if (currentTime > lastWatchedTime + 2) {
+          playerInstance.seekTo(lastWatchedTime, true); // Force reset to the last watched time
+        } else {
+          setLastWatchedTime(currentTime); // Update the last watched time during normal playback
+        }
+      }, 1000); // Check every second
+      return () => clearInterval(interval);
+    }
+  }, [playerInstance, lastWatchedTime]);
 
-      playerRef.current = interval;
-    } else {
-      clearInterval(playerRef.current);
+  const handleReady = (event) => {
+    setPlayerInstance(event.target); // Save reference to player instance
+  };
+
+  const handleVideoStateChange = (event) => {
+    if (event.data === 1) { // Video is playing
+      const duration = event.target.getDuration();
+      const currentTime = event.target.getCurrentTime();
+      const progress = (currentTime / duration) * 100;
+      setProgressWidth(progress);
     }
   };
 
@@ -111,7 +110,6 @@ const ContentArea = ({ updateHeaderPoints }) => {
       const url = action === 'subscribe' && channelId
         ? `https://www.youtube.com/channel/${channelId}`
         : `https://www.youtube.com/watch?v=${videoId}`;
-
       if (url) {
         window.open(url, '_blank');
         setVerification({ action, isVisible: true });
@@ -126,20 +124,15 @@ const ContentArea = ({ updateHeaderPoints }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.post('http://localhost:4000/api/update-points', {
-          userId: currentUser._id, // Use the logged-in user's ID
+          userId: currentUser._id,
           action: verification.action,
         }, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        // Update the current user's points locally after success
         const updatedUser = response.data;
-        setCurrentUser(updatedUser); // Update the current user's points locally
+        setCurrentUser(updatedUser);
         setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
-
-        // Pass the updated points to the Header for real-time updates
         updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
-
       } catch (error) {
         console.error('Error updating points:', error);
       }
@@ -178,6 +171,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
               <YouTube
                 videoId={videoId}
                 opts={{ height: '500', width: '100%' }}
+                onReady={handleReady} // Save player instance when ready
                 onStateChange={handleVideoStateChange}
               />
             )}
@@ -218,9 +212,9 @@ const ContentArea = ({ updateHeaderPoints }) => {
 
       {/* Footer Component */}
       <Footer
-        isVideoPlaying={false} // You can manage video play state as needed
+        isVideoPlaying={false} 
         progress={progressWidth}
-        fetchRandomUser={fetchRandomUser} // Pass the function to fetch a new random user
+        fetchRandomUser={fetchRandomUser}
       />
 
       {/* Verification Modal */}
