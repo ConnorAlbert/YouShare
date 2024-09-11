@@ -5,10 +5,28 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import Footer from './Footer'; // Import Footer
 import '../styles/ContentArea.css'; // Use ContentArea-specific styles
 
-const extractVideoId = (url) => {
+// Updated extractVideoId function
+const extractVideoId = (input) => {
   try {
-    const urlObj = new URL(url);
-    return urlObj.hostname === 'youtu.be' ? urlObj.pathname.split('/')[1] : urlObj.searchParams.get('v');
+    // If the input is already just a video ID (no "http" or "www"), return it as-is
+    if (!input.startsWith('http')) {
+      return input;
+    }
+
+    // Parse the input as a URL
+    const videoUrl = new URL(input);
+
+    // Handle YouTube short URLs (https://youtu.be/videoId)
+    if (videoUrl.hostname === 'youtu.be') {
+      return videoUrl.pathname.split('/')[1];
+    }
+
+    // Handle standard YouTube URLs (https://www.youtube.com/watch?v=videoId)
+    if (videoUrl.hostname === 'www.youtube.com' && videoUrl.pathname === '/watch') {
+      return videoUrl.searchParams.get('v');
+    }
+
+    return null; // Return null if the URL doesn't match expected formats
   } catch (error) {
     console.error('Invalid URL:', error);
     return null;
@@ -38,16 +56,16 @@ const ContentArea = ({ updateHeaderPoints }) => {
       });
 
       setFeaturedUser(featuredResponse.data);
-      if (featuredResponse.data.featuredVideoId) {
-        const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
-        if (videoId) {
-          const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
-          const videoData = await videoResponse.json();
-          
-          if (videoData.items?.length) {
-            setChannelId(videoData.items[0].snippet.channelId);
-          }
+      const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
+      if (videoId) {
+        const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
+        const videoData = await videoResponse.json();
+        
+        if (videoData.items?.length) {
+          setChannelId(videoData.items[0].snippet.channelId);
         }
+      } else {
+        console.error('No valid video ID found');
       }
 
       // Fetch the current logged-in user's data

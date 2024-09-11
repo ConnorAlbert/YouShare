@@ -13,15 +13,18 @@ const Actions = ({ addXp }) => {
 
   const extractVideoId = (url) => {
     try {
-      if (typeof url !== 'string' || !url) {
-        console.error('Invalid URL format:', url);
-        return null;
+      if (!url.startsWith('http')) {
+        // If it's already a video ID, return it as-is
+        return url;
       }
+      
       const videoUrl = new URL(url);
       if (videoUrl.hostname === 'youtu.be') {
+        // Handle short URLs like https://youtu.be/videoId
         return videoUrl.pathname.split('/')[1];
       }
       if (videoUrl.hostname === 'www.youtube.com' && videoUrl.pathname === '/watch') {
+        // Handle full YouTube URLs like https://www.youtube.com/watch?v=videoId
         return videoUrl.searchParams.get('v');
       }
       return null;
@@ -30,7 +33,6 @@ const Actions = ({ addXp }) => {
       return null;
     }
   };
-
   useEffect(() => {
     const fetchCurrentVideo = async () => {
       try {
@@ -50,9 +52,9 @@ const Actions = ({ addXp }) => {
   }, []);
 
   const handleLinkVideo = async () => {
-    const videoUrl = prompt("Please enter the YouTube video URL:");
+    const videoUrl = prompt("Please enter the YouTube video URL or ID:");
     if (videoUrl) {
-      const newVideoId = extractVideoId(videoUrl);
+      const newVideoId = extractVideoId(videoUrl); // Extract the video ID
       if (newVideoId) {
         try {
           const token = localStorage.getItem('token');
@@ -60,12 +62,12 @@ const Actions = ({ addXp }) => {
             { videoId: newVideoId }, 
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          setVideoId(newVideoId);
+          setVideoId(newVideoId); // Update state with the new video ID
         } catch (error) {
           console.error('Error updating featured video:', error);
         }
       } else {
-        alert("Invalid YouTube video URL");
+        alert("Invalid YouTube video URL or ID");
       }
     }
   };
