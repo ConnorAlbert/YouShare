@@ -18,7 +18,8 @@
   flex-direction: column;
   align-items: center;
   margin-right: 10px;
-  padding: 20px;
+  padding: 10px;
+  margin-top: 3.2%;
 }
 
 .username {
@@ -61,16 +62,28 @@
   padding-top: 10px;
 }
 
-/* Updated video-container */
 .video-container {
   width: 100%;
-  height: 400px;
+  /* Maintain aspect ratio (16:9 for YouTube videos) */
+  position: relative;
+  padding-bottom: 50.25%; /* 16:9 aspect ratio */
+  height: 0;
   background-color: #000; /* Background for the video */
-  padding: 20px; /* Add some padding around the video */
   border: 3px solid #CCA43B; /* Gold border around the video */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add some shadow for depth */
   margin-bottom: 20px;
+}
+
+.video-container iframe,
+.video-container .youtube-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px; /* Make sure the iframe also has rounded corners */
 }
 
 .right-section {

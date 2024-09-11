@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -11,6 +10,8 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const jwt = require('jsonwebtoken'); // JWT import added
+const cron = require('node-cron'); // Import node-cron for scheduling tasks
+const User = require('./models'); // Import User model for updating daily points
 
 require('./strategies/google');
 
@@ -76,6 +77,17 @@ async function startServer() {
 
   // Apply Apollo Server middleware
   server.applyMiddleware({ app, cors: false });
+
+  // Schedule a cron job to reset daily points every day at midnight
+  cron.schedule('0 0 * * *', async () => {
+    try {
+      // Reset daily points for all users
+      await User.updateMany({}, { $set: { dailyPoints: 0 } });
+      console.log('Daily points reset for all users at midnight.');
+    } catch (error) {
+      console.error('Error resetting daily points:', error);
+    }
+  });
 
   // Start server
   app.listen({ port: 4000 }, () => {

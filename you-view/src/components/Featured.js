@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import axios from 'axios';
+import YouTube from 'react-youtube'; // Import YouTube component
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import '../styles/Featured.css'; // Import the CSS file
 
-const extractVideoId = (url) => {
+// Reuse the updated extractVideoId from ContentArea.js to handle different formats
+const extractVideoId = (input) => {
   try {
-    const urlObj = new URL(url);
-    return urlObj.hostname === 'youtu.be' ? urlObj.pathname.split('/')[1] : urlObj.searchParams.get('v');
+    if (!input.startsWith('http')) {
+      return input; // If it's not a URL, assume it's a raw video ID
+    }
+    const videoUrl = new URL(input);
+    if (videoUrl.hostname === 'youtu.be') {
+      return videoUrl.pathname.split('/')[1];
+    }
+    if (videoUrl.hostname === 'www.youtube.com' && videoUrl.pathname === '/watch') {
+      return videoUrl.searchParams.get('v');
+    }
+    return null;
   } catch (error) {
     console.error('Invalid URL:', error);
     return null;
@@ -130,6 +141,8 @@ const Featured = ({ updateHeaderPoints }) => {
   if (loading) return <p>Loading...</p>;
   if (!featuredUser) return <p>No featured user found</p>;
 
+  const videoId = extractVideoId(featuredUser.featuredVideoId); // Extract video ID here
+
   return (
     <div className="featured-container">
       <div className="featured-inner">
@@ -153,16 +166,11 @@ const Featured = ({ updateHeaderPoints }) => {
             {isFeaturedUserCurrentUser ? "You are the Featured Creator" : "Featured Creator"}
           </h2>
           <div className="video-container">
-            {featuredUser.featuredVideoId && (
-              <iframe 
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${extractVideoId(featuredUser.featuredVideoId)}?`} 
-                title="YouTube video player" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen>
-              </iframe>
+            {videoId && (
+              <YouTube
+                videoId={videoId}
+                opts={{ height: '500', width: '100%' }} // Same styling as ContentArea
+              />
             )}
           </div>
         </div>

@@ -19,6 +19,7 @@
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.2",
+    "node-cron": "^3.0.3",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "react": "^18.2.0",
