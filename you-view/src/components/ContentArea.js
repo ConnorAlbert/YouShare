@@ -47,6 +47,10 @@ const ContentArea = ({ updateHeaderPoints }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFeaturedUser(featuredResponse.data);
+
+      // Reset checkboxes whenever a new video is fetched
+      setCheckboxes({ like: false, comment: false, subscribe: false });
+
       const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
       if (videoId) {
         const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
@@ -57,6 +61,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
       } else {
         console.error('No valid video ID found');
       }
+
       const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
         headers: { Authorization: `Bearer ${token}` },
       });
