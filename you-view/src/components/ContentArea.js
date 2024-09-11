@@ -27,7 +27,7 @@ const extractVideoId = (input) => {
 
 const ContentArea = ({ updateHeaderPoints }) => {
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
-  const [progressWidth, setProgressWidth] = useState(0);
+  const [progressWidth, setProgressWidth] = useState(0); // Progress bar width
   const [verification, setVerification] = useState({ action: '', isVisible: false });
   const [channelId, setChannelId] = useState('');
   const [featuredUser, setFeaturedUser] = useState(null);
@@ -81,27 +81,26 @@ const ContentArea = ({ updateHeaderPoints }) => {
     if (playerInstance) {
       const interval = setInterval(() => {
         const currentTime = playerInstance.getCurrentTime();
+        const duration = playerInstance.getDuration();
+
+        // Update the progress bar continuously
+        const progress = (currentTime / duration) * 100;
+        setProgressWidth(progress);
+
+        // Check if the user is trying to skip ahead and reset if necessary
         if (currentTime > lastWatchedTime + 2) {
           playerInstance.seekTo(lastWatchedTime, true); // Force reset to the last watched time
         } else {
           setLastWatchedTime(currentTime); // Update the last watched time during normal playback
         }
       }, 1000); // Check every second
-      return () => clearInterval(interval);
+
+      return () => clearInterval(interval); // Clear the interval when component unmounts
     }
   }, [playerInstance, lastWatchedTime]);
 
   const handleReady = (event) => {
     setPlayerInstance(event.target); // Save reference to player instance
-  };
-
-  const handleVideoStateChange = (event) => {
-    if (event.data === 1) { // Video is playing
-      const duration = event.target.getDuration();
-      const currentTime = event.target.getCurrentTime();
-      const progress = (currentTime / duration) * 100;
-      setProgressWidth(progress);
-    }
   };
 
   const handleActionClick = (action) => {
@@ -172,7 +171,6 @@ const ContentArea = ({ updateHeaderPoints }) => {
                 videoId={videoId}
                 opts={{ height: '500', width: '100%' }}
                 onReady={handleReady} // Save player instance when ready
-                onStateChange={handleVideoStateChange}
               />
             )}
           </div>
@@ -213,7 +211,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
       {/* Footer Component */}
       <Footer
         isVideoPlaying={false} 
-        progress={progressWidth}
+        progress={progressWidth} // Pass the progress width to Footer
         fetchRandomUser={fetchRandomUser}
       />
 
