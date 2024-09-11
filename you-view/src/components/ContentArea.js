@@ -33,8 +33,9 @@ const ContentArea = ({ updateHeaderPoints }) => {
   const [featuredUser, setFeaturedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [awardedPoints, setAwardedPoints] = useState([false, false, false, false]); // For tracking points at 25%, 50%, 75%, and 100%
   const playerRef = useRef(null);
-  const [lastWatchedTime, setLastWatchedTime] = useState(0); // Track last watched time
+  const [lastWatchedTime, setLastWatchedTime] = useState(0); // Track last valid watched time
   const [playerInstance, setPlayerInstance] = useState(null);
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -92,28 +93,71 @@ const ContentArea = ({ updateHeaderPoints }) => {
         const progress = (currentTime / duration) * 100;
         setProgressWidth(progress);
 
-        // Check if the user is trying to skip ahead and reset if necessary
-        if (currentTime > lastWatchedTime + 2) {
+        // Only award points if the user is not skipping ahead
+        const safeTimeWindow = 2; // Safe window in seconds
+        const timeDifference = currentTime - lastWatchedTime;
+
+        if (timeDifference <= safeTimeWindow && timeDifference >= 0) {
+          // Award points based on progress
+          const newAwardedPoints = [...awardedPoints];
+          if (progress >= 25 && !awardedPoints[0]) {
+            newAwardedPoints[0] = true;
+            awardPoints(); // Award points at 25%
+          }
+          if (progress >= 50 && !awardedPoints[1]) {
+            newAwardedPoints[1] = true;
+            awardPoints(); // Award points at 50%
+          }
+          if (progress >= 75 && !awardedPoints[2]) {
+            newAwardedPoints[2] = true;
+            awardPoints(); // Award points at 75%
+          }
+          if (progress >= 100 && !awardedPoints[3]) {
+            newAwardedPoints[3] = true;
+            awardPoints(); // Award points at 100%
+          }
+          setAwardedPoints(newAwardedPoints);
+        }
+
+        // Prevent users from skipping ahead
+        if (timeDifference > safeTimeWindow) {
           playerInstance.seekTo(lastWatchedTime, true); // Force reset to the last watched time
         } else {
-          setLastWatchedTime(currentTime); // Update the last watched time during normal playback
+          setLastWatchedTime(currentTime); // Update the last valid watched time during normal playback
         }
       }, 1000); // Check every second
 
       return () => clearInterval(interval); // Clear the interval when component unmounts
     }
-  }, [playerInstance, lastWatchedTime]);
+  }, [playerInstance, lastWatchedTime, awardedPoints]);
 
   const handleReady = (event) => {
     setPlayerInstance(event.target); // Save reference to player instance
   };
 
+  const awardPoints = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        'http://localhost:4000/api/update-points',
+        { userId: currentUser._id, action: 'watch' }, // Assuming 'watch' is the action
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const updatedUser = response.data;
+      setCurrentUser(updatedUser);
+      updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
+    } catch (error) {
+      console.error('Error awarding points:', error);
+    }
+  };
+
   const handleActionClick = (action) => {
     if (featuredUser?.featuredVideoId) {
       const videoId = extractVideoId(featuredUser.featuredVideoId);
-      const url = action === 'subscribe' && channelId
-        ? `https://www.youtube.com/channel/${channelId}`
-        : `https://www.youtube.com/watch?v=${videoId}`;
+      const url =
+        action === 'subscribe' && channelId
+          ? `https://www.youtube.com/channel/${channelId}`
+          : `https://www.youtube.com/watch?v=${videoId}`;
       if (url) {
         window.open(url, '_blank');
         setVerification({ action, isVisible: true });
@@ -127,15 +171,14 @@ const ContentArea = ({ updateHeaderPoints }) => {
     if (didComplete && verification.action) {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:4000/api/update-points', {
-          userId: currentUser._id,
-          action: verification.action,
-        }, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.post(
+          'http://localhost:4000/api/update-points',
+          { userId: currentUser._id, action: verification.action },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         const updatedUser = response.data;
         setCurrentUser(updatedUser);
-        setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
+        setCheckboxes((prev) => ({ ...prev, [verification.action]: true }));
         updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
       } catch (error) {
         console.error('Error updating points:', error);
@@ -155,14 +198,18 @@ const ContentArea = ({ updateHeaderPoints }) => {
         {/* Left Section */}
         <div className="contentarea-left-section">
           <AccountCircleIcon style={{ fontSize: '10rem', color: '#CCA43B' }} />
-          
+
           <div className="points-container">
             <h3 className="username">{featuredUser.username}</h3>
             <div className="points-box">
-              <p className="points-text">Daily Points: <span className="points-count">{featuredUser.dailyPoints}</span></p>
+              <p className="points-text">
+                Daily Points: <span className="points-count">{featuredUser.dailyPoints}</span>
+              </p>
             </div>
             <div className="points-box">
-              <p className="points-text">Total Points: <span className="points-count">{featuredUser.totalPoints}</span></p>
+              <p className="points-text">
+                Total Points: <span className="points-count">{featuredUser.totalPoints}</span>
+              </p>
             </div>
           </div>
         </div>
@@ -171,13 +218,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
         <div className="contentarea-middle-section">
           <h2 className="contentarea-title"></h2>
           <div className="contentarea-video-container">
-            {videoId && (
-              <YouTube
-                videoId={videoId}
-                opts={{ height: '500', width: '100%' }}
-                onReady={handleReady} // Save player instance when ready
-              />
-            )}
+            {videoId && <YouTube videoId={videoId} opts={{ height: '500', width: '100%' }} onReady={handleReady} />}
           </div>
         </div>
 
@@ -214,11 +255,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
       </div>
 
       {/* Footer Component */}
-      <Footer
-        isVideoPlaying={false} 
-        progress={progressWidth} // Pass the progress width to Footer
-        fetchRandomUser={fetchRandomUser}
-      />
+      <Footer isVideoPlaying={false} progress={progressWidth} fetchRandomUser={fetchRandomUser} />
 
       {/* Verification Modal */}
       {verification.isVisible && (
@@ -226,16 +263,10 @@ const ContentArea = ({ updateHeaderPoints }) => {
           <div className="contentarea-modal">
             <h2>{verification.action.charAt(0).toUpperCase() + verification.action.slice(1)} Verification</h2>
             <p>Did you complete the action?</p>
-            <button
-              className="contentarea-modalButton contentarea-modalButtonConfirm"
-              onClick={() => handleVerificationResponse(true)}
-            >
+            <button className="contentarea-modalButton contentarea-modalButtonConfirm" onClick={() => handleVerificationResponse(true)}>
               Yes
             </button>
-            <button
-              className="contentarea-modalButton contentarea-modalButtonClose"
-              onClick={() => handleVerificationResponse(false)}
-            >
+            <button className="contentarea-modalButton contentarea-modalButtonClose" onClick={() => handleVerificationResponse(false)}>
               No
             </button>
           </div>
