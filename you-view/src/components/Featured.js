@@ -23,6 +23,7 @@ const Featured = ({ updateHeaderPoints }) => {
   const [featuredUser, setFeaturedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null); // Store the current user's data
   const [loading, setLoading] = useState(true);
+  const [isFeaturedUserCurrentUser, setIsFeaturedUserCurrentUser] = useState(false); // New state for disabling buttons
   const navigate = useNavigate(); // Instantiate the useNavigate hook
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -32,14 +33,13 @@ const Featured = ({ updateHeaderPoints }) => {
       try {
         const token = localStorage.getItem('token');
         
-        // Check if the user is logged in by checking the token
         if (!token) {
           navigate('/login'); // Redirect to login if no token is found
           return;
         }
 
-        // Fetch the featured user
-        const featuredResponse = await axios.get('http://localhost:4000/api/random-featured-user', {
+        // Fetch the user with the highest daily points
+        const featuredResponse = await axios.get('http://localhost:4000/api/highest-daily-points-user', {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -61,6 +61,11 @@ const Featured = ({ updateHeaderPoints }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCurrentUser(currentUserResponse.data);
+
+        // Check if the current user is the featured user
+        if (currentUserResponse.data._id === featuredResponse.data._id) {
+          setIsFeaturedUserCurrentUser(true); // Set flag to disable buttons if they are the same
+        }
 
       } catch (error) {
         if (error.response?.status === 401) {
@@ -110,14 +115,11 @@ const Featured = ({ updateHeaderPoints }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // Update the current user's points locally after success
         const updatedUser = response.data;
-        setCurrentUser(updatedUser); // Update the current user's points locally
+        setCurrentUser(updatedUser);
         setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
 
-        // Pass the updated points to the Header for real-time updates
         updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
-
       } catch (error) {
         console.error('Error updating points:', error);
       }
@@ -131,7 +133,6 @@ const Featured = ({ updateHeaderPoints }) => {
   return (
     <div className="featured-container">
       <div className="featured-inner">
-        {/* Left Section */}
         <div className="left-section">
           <AccountCircleIcon style={{ fontSize: '10rem', color: '#CCA43B' }} />
           
@@ -146,9 +147,11 @@ const Featured = ({ updateHeaderPoints }) => {
           </div>
         </div>
 
-        {/* Middle Section */}
         <div className="middle-section">
-          <h2 className="title">Featured Creator</h2>
+          {/* Conditionally render the title */}
+          <h2 className="title">
+            {isFeaturedUserCurrentUser ? "You are the Featured Creator" : "Featured Creator"}
+          </h2>
           <div className="video-container">
             {featuredUser.featuredVideoId && (
               <iframe 
@@ -164,7 +167,6 @@ const Featured = ({ updateHeaderPoints }) => {
           </div>
         </div>
 
-        {/* Right Section */}
         <div className="right-section">
           <div className="actions-wrapper">
             <h2 className="actions-title">Actions</h2>
@@ -172,7 +174,7 @@ const Featured = ({ updateHeaderPoints }) => {
               <button
                 className={`button buttonLike ${checkboxes.like ? 'buttonLiked' : ''}`}
                 onClick={() => handleActionClick('like')}
-                disabled={checkboxes.like}
+                disabled={checkboxes.like || isFeaturedUserCurrentUser} // Disable if current user is the featured user
               >
                 <ThumbUpAltOutlinedIcon style={{ marginRight: '10px',}} />
                 {checkboxes.like ? 'Liked' : 'Like'}
@@ -180,14 +182,14 @@ const Featured = ({ updateHeaderPoints }) => {
               <button
                 className={`button buttonComment ${checkboxes.comment ? 'buttonCommented' : ''}`}
                 onClick={() => handleActionClick('comment')}
-                disabled={checkboxes.comment}
+                disabled={checkboxes.comment || isFeaturedUserCurrentUser} // Disable if current user is the featured user
               >
                 {checkboxes.comment ? 'Commented' : 'Comment'}
               </button>
               <button
                 className={`button buttonSubscribe ${checkboxes.subscribe ? 'buttonSubscribed' : ''}`}
                 onClick={() => handleActionClick('subscribe')}
-                disabled={checkboxes.subscribe}
+                disabled={checkboxes.subscribe || isFeaturedUserCurrentUser} // Disable if current user is the featured user
               >
                 {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
               </button>
@@ -196,7 +198,6 @@ const Featured = ({ updateHeaderPoints }) => {
         </div>
       </div>
 
-      {/* Verification Modal */}
       {verification.isVisible && (
         <div className="modalOverlay">
           <div className="modal">

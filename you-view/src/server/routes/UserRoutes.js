@@ -77,6 +77,23 @@ router.get('/random-featured-user', authenticate, async (req, res) => {
   }
 });
 
+// Fetch user with the highest daily points
+router.get('/highest-daily-points-user', authenticate, async (req, res) => {
+  try {
+    // Find the user with the highest daily points
+    const userWithHighestPoints = await User.findOne().sort({ dailyPoints: -1 }).limit(1);
+
+    if (!userWithHighestPoints) {
+      return res.status(404).json({ message: 'No users with daily points found' });
+    }
+
+    res.json(userWithHighestPoints);
+  } catch (error) {
+    console.error('Error fetching user with highest daily points:', error);
+    res.status(500).json({ message: 'Error fetching user with highest daily points', error });
+  }
+});
+
 // Update current user's points when an action is performed
 router.post('/update-points', authenticate, async (req, res) => {
   try {
