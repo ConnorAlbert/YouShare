@@ -166,11 +166,18 @@ const Featured = ({ updateHeaderPoints }) => {
             {isFeaturedUserCurrentUser ? "You are the Featured Creator" : "Featured Creator"}
           </h2>
           <div className="video-container">
-            {videoId && (
-              <YouTube
-                videoId={videoId}
-                opts={{ height: '500', width: '100%' }} // Same styling as ContentArea
-              />
+            {/* Check if the user is the featured user and if they have a video linked */}
+            {isFeaturedUserCurrentUser && !videoId ? (
+              <div className="no-video-message">
+                <p>Please link a video to display here.</p>
+              </div>
+            ) : (
+              videoId && (
+                <YouTube
+                  videoId={videoId}
+                  opts={{ height: '500', width: '100%' }} // Same styling as ContentArea
+                />
+              )
             )}
           </div>
         </div>

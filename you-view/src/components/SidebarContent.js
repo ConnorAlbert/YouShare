@@ -51,7 +51,7 @@ const SidebarContent = ({ level, xp }) => {
           <div className="sidebar-xpFill" style={{ height: `${filledPercentage}%` }}></div>
           {shouldShowLevel && <div className="sidebar-levelUp"></div>}
           <div className="sidebar-currentLevel">
-            <h3>🔥{level}</h3>
+            <h3></h3>
           </div>
         </div>
       </div>

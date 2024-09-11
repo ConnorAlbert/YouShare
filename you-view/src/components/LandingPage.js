@@ -19,18 +19,18 @@ const styles = {
     fontWeight: 'bold',
     whiteSpace: 'pre-line',
     paddingLeft: '20px',
-    color: '#242f40'
+    color: '#242f40',
   },
   body: {
     paddingLeft: '20px',
     fontSize: '20px',
-    color: '#363636'
+    color: '#363636',
   },
   buttonContainer: {
     display: 'flex',
     alignItems: 'center',
     marginTop: '20px',
-    marginLeft: '50px'
+    marginLeft: '50px',
   },
   button: {
     backgroundColor: '#CCA43B',
@@ -116,6 +116,51 @@ const styles = {
     top: '40%',
     transform: 'translateY(-50%)',
   },
+  howItWorksSection: {
+    padding: '50px',
+    backgroundColor: '#e5e5e5',
+    color: '#242f40',
+  },
+  conceptsContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '40px',
+  },
+  conceptBox: {
+    flex: '1',
+    textAlign: 'center',
+    padding: '20px',
+    backgroundColor: '#242f40',
+    color: '#fff',
+    fontSize: '24px',
+    fontWeight: 'bold',
+    borderRadius: '10px',
+    margin: '0 10px',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+  },
+  contentBoxesContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  contentBox: {
+    flex: '1',
+    backgroundColor: '#ffffff',
+    padding: '30px',
+    borderRadius: '10px',
+    margin: '0 10px',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+  },
+  contentHeading: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+    color: '#242f40',
+  },
+  contentBody: {
+    fontSize: '16px',
+    lineHeight: '1.6',
+    color: '#363636',
+  },
 };
 
 const bounce = keyframes`
@@ -188,12 +233,43 @@ const LandingPage = () => {
         </Button>
         <BouncingArrow style={styles.rightBouncingArrow} />
       </div>
-      <div ref={howItWorksSectionRef}>
-        <div>
-          Stuff and things
+
+      <div ref={howItWorksSectionRef} style={styles.howItWorksSection}>
+        {/* Main Concepts Displayed Horizontally */}
+        <div style={styles.conceptsContainer}>
+          <div style={styles.conceptBox}>Featured Creator</div>
+          <div style={styles.conceptBox}>Earn Points</div>
+          <div style={styles.conceptBox}>Video Integration</div>
+          <div style={styles.conceptBox}>Real-Time Feedback</div>
         </div>
-        {/* <HowItWorksHeader /> */}
-        {/* ... Other content in the "How it works" section ... */}
+
+        {/* Content Boxes Below */}
+        <div style={styles.contentBoxesContainer}>
+          <div style={styles.contentBox}>
+            <h3 style={styles.contentHeading}>Featured Creator</h3>
+            <p style={styles.contentBody}>
+              Each day, we highlight a "Featured Creator" based on their engagement and points earned. As the featured creator, your profile and content are shown to everyone on the platform.
+            </p>
+          </div>
+          <div style={styles.contentBox}>
+            <h3 style={styles.contentHeading}>Earn Points for Engagement</h3>
+            <p style={styles.contentBody}>
+              Users can like, comment, and subscribe to your content to help boost your visibility. Points are reset daily to ensure a fair playing field.
+            </p>
+          </div>
+          <div style={styles.contentBox}>
+            <h3 style={styles.contentHeading}>Video Integration</h3>
+            <p style={styles.contentBody}>
+              Link your YouTube videos to your profile and get ready to share your content directly from our platform, making it easy for users to engage.
+            </p>
+          </div>
+          <div style={styles.contentBox}>
+            <h3 style={styles.contentHeading}>Real-Time Feedback</h3>
+            <p style={styles.contentBody}>
+              Our platform tracks the progress of your video views, ensuring meaningful interactions with real-time progress tracking and feedback.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
