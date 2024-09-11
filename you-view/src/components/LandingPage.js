@@ -124,7 +124,7 @@ const styles = {
   conceptsContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '40px',
+    marginBottom: '0px',
   },
   conceptBox: {
     flex: '1',
@@ -145,19 +145,15 @@ const styles = {
   contentBox: {
     flex: '1',
     backgroundColor: '#ffffff',
-    padding: '30px',
+    padding: '20px',
     borderRadius: '10px',
     margin: '0 10px',
+    marginBottom: '60px',
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
   },
-  contentHeading: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-    color: '#242f40',
-  },
+  
   contentBody: {
-    fontSize: '16px',
+    fontSize: '20px',
     lineHeight: '1.6',
     color: '#363636',
   },
@@ -246,27 +242,54 @@ const LandingPage = () => {
         {/* Content Boxes Below */}
         <div style={styles.contentBoxesContainer}>
           <div style={styles.contentBox}>
-            <h3 style={styles.contentHeading}>Featured Creator</h3>
             <p style={styles.contentBody}>
               Each day, we highlight a "Featured Creator" based on their engagement and points earned. As the featured creator, your profile and content are shown to everyone on the platform.
             </p>
           </div>
           <div style={styles.contentBox}>
-            <h3 style={styles.contentHeading}>Earn Points for Engagement</h3>
             <p style={styles.contentBody}>
               Users can like, comment, and subscribe to your content to help boost your visibility. Points are reset daily to ensure a fair playing field.
             </p>
           </div>
           <div style={styles.contentBox}>
-            <h3 style={styles.contentHeading}>Video Integration</h3>
             <p style={styles.contentBody}>
               Link your YouTube videos to your profile and get ready to share your content directly from our platform, making it easy for users to engage.
             </p>
           </div>
           <div style={styles.contentBox}>
-            <h3 style={styles.contentHeading}>Real-Time Feedback</h3>
             <p style={styles.contentBody}>
               Our platform tracks the progress of your video views, ensuring meaningful interactions with real-time progress tracking and feedback.
+            </p>
+          </div>
+        </div>
+
+        {/* Additional How It Works Section */}
+        <div style={styles.conceptsContainer}>
+          <div style={styles.conceptBox}>Daily Point Reset</div>
+          <div style={styles.conceptBox}>Leaderboard System</div>
+          <div style={styles.conceptBox}>Secure User Authentication</div>
+          <div style={styles.conceptBox}>Mobile-Friendly Design</div>
+        </div>
+
+        <div style={styles.contentBoxesContainer}>
+          <div style={styles.contentBox}>
+            <p style={styles.contentBody}>
+              Points are reset every day at midnight, ensuring fairness and giving everyone an equal chance to be featured as the creator of the day.
+            </p>
+          </div>
+          <div style={styles.contentBox}>
+            <p style={styles.contentBody}>
+              Our leaderboard system showcases the top creators based on their daily and total points, motivating users to engage with more content.
+            </p>
+          </div>
+          <div style={styles.contentBox}>
+            <p style={styles.contentBody}>
+              We use JWT-based authentication to ensure that all users' data is secure and that their identities are protected during each session.
+            </p>
+          </div>
+          <div style={styles.contentBox}>
+            <p style={styles.contentBody}>
+              Our platform is optimized for both desktop and mobile devices, allowing users to engage with content on the go.
             </p>
           </div>
         </div>

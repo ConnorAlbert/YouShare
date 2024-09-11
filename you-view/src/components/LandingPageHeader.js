@@ -70,18 +70,8 @@ const LandingPageHeader = () => {
         <div style={styles.logo}>YouShare</div>
         <nav>
           <ul style={styles.navLinks}>
-            <li>
-              <a style={styles.navLink} href="/">Home</a>
-            </li>
-            <li>
-              <a style={styles.navLink} href="/about">About</a>
-            </li>
-            <li>
-              <a style={styles.navLink} href="/faq">FAQ</a>
-            </li>
-            <li>
-              <a style={styles.navLink} href="/contact">Contact</a>
-            </li>
+            
+            
           </ul>
         </nav>
         <div>

@@ -57,15 +57,8 @@ const SidebarContent = ({ level, xp }) => {
       </div>
 
       <div className="sidebar-linksContainer">
-        <div className="sidebar-link">
-          <div className="sidebar-button" onClick={() => { openModal(); setModalPage(0); }}>Profile Stats</div>
-        </div>
-        <div className="sidebar-link">
-          <div className="sidebar-button" onClick={() => { openModal(); setModalPage(1); }}>Tier Rewards</div>
-        </div>
-        <div className="sidebar-link">
-          <div className="sidebar-button" onClick={() => { openModal(); setModalPage(2); }}>How does this work?</div>
-        </div>
+        
+          
         <Link to="/login" className="sidebar-link">
           <div className="sidebar-logoutButton">Log Out</div>
         </Link>

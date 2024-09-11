@@ -35,6 +35,7 @@ const Featured = ({ updateHeaderPoints }) => {
   const [currentUser, setCurrentUser] = useState(null); // Store the current user's data
   const [loading, setLoading] = useState(true);
   const [isFeaturedUserCurrentUser, setIsFeaturedUserCurrentUser] = useState(false); // New state for disabling buttons
+  const [showLoginError, setShowLoginError] = useState(false); // New state for login error
   const navigate = useNavigate(); // Instantiate the useNavigate hook
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -45,7 +46,7 @@ const Featured = ({ updateHeaderPoints }) => {
         const token = localStorage.getItem('token');
         
         if (!token) {
-          navigate('/login'); // Redirect to login if no token is found
+          setShowLoginError(true); // Show the login error message if no token
           return;
         }
 
@@ -80,8 +81,7 @@ const Featured = ({ updateHeaderPoints }) => {
 
       } catch (error) {
         if (error.response?.status === 401) {
-          alert('Unauthorized. Please log in again.');
-          navigate('/login'); // Redirect to login if unauthorized
+          setShowLoginError(true); // Set the error state to show login message if unauthorized
         } else {
           console.error('Error fetching data:', error);
         }
@@ -138,6 +138,10 @@ const Featured = ({ updateHeaderPoints }) => {
     setVerification({ action: '', isVisible: false });
   };
 
+  const handleLoginRedirect = () => {
+    navigate('/login'); // Navigate to login page when user clicks the button
+  };
+
   if (loading) return <p>Loading...</p>;
   if (!featuredUser) return <p>No featured user found</p>;
 
@@ -145,6 +149,14 @@ const Featured = ({ updateHeaderPoints }) => {
 
   return (
     <div className="featured-container">
+      {/* Display login error message with redirect option */}
+      {showLoginError && (
+        <div className="error-banner">
+          <p>You must be logged in to view this page.</p>
+          <button onClick={handleLoginRedirect}>Go to Login</button>
+        </div>
+      )}
+
       <div className="featured-inner">
         <div className="left-section">
           <AccountCircleIcon style={{ fontSize: '10rem', color: '#CCA43B' }} />
