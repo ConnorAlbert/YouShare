@@ -29,18 +29,25 @@ const Home = () => {
   };
 
   const handleSidebarToggle = () => {
+    // Implement sidebar toggle logic if needed
+  };
+
+  const updateHeaderPoints = (dailyPoints, totalPoints) => {
+    // Implement header points update logic
+    console.log('Updating header points:', dailyPoints, totalPoints);
+    setXp(dailyPoints); // Example logic
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.mainContent}>
-      <Header level={level} xp={xp} handleSidebarToggle={handleSidebarToggle} />
+        <Header level={level} xp={xp} handleSidebarToggle={handleSidebarToggle} />
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           <div style={{ flexBasis: '55%' }}>
-            <Featured />
+            <Featured updateHeaderPoints={updateHeaderPoints} /> {/* Pass updateHeaderPoints */}
           </div>
           <div style={{ flexBasis: '45%' }}>
-            <Actions addXp= {addXp}/>
+            <Actions addXp={addXp} />
           </div>
         </div>
       </div>

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import YouTube from 'react-youtube'; // Import YouTube component
+import YouTube from 'react-youtube';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
-import '../styles/Featured.css'; // Import the CSS file
+import '../styles/Featured.css';
 
-// Reuse the updated extractVideoId from ContentArea.js to handle different formats
 const extractVideoId = (input) => {
   try {
     if (!input.startsWith('http')) {
-      return input; // If it's not a URL, assume it's a raw video ID
+      return input;
     }
     const videoUrl = new URL(input);
     if (videoUrl.hostname === 'youtu.be') {
@@ -26,17 +25,17 @@ const extractVideoId = (input) => {
   }
 };
 
-const Featured = ({ updateHeaderPoints }) => {
+const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
   const [progressWidth, setProgressWidth] = useState(0);
   const [verification, setVerification] = useState({ action: '', isVisible: false });
   const [channelId, setChannelId] = useState('');
   const [featuredUser, setFeaturedUser] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null); // Store the current user's data
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isFeaturedUserCurrentUser, setIsFeaturedUserCurrentUser] = useState(false); // New state for disabling buttons
-  const [showLoginError, setShowLoginError] = useState(false); // New state for login error
-  const navigate = useNavigate(); // Instantiate the useNavigate hook
+  const [isFeaturedUserCurrentUser, setIsFeaturedUserCurrentUser] = useState(false);
+  const [showLoginError, setShowLoginError] = useState(false);
+  const navigate = useNavigate();
 
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -46,11 +45,10 @@ const Featured = ({ updateHeaderPoints }) => {
         const token = localStorage.getItem('token');
         
         if (!token) {
-          setShowLoginError(true); // Show the login error message if no token
+          setShowLoginError(true);
           return;
         }
 
-        // Fetch the user with the highest daily points
         const featuredResponse = await axios.get('http://localhost:4000/api/highest-daily-points-user', {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -68,20 +66,18 @@ const Featured = ({ updateHeaderPoints }) => {
           }
         }
 
-        // Fetch the current logged-in user's data
         const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCurrentUser(currentUserResponse.data);
 
-        // Check if the current user is the featured user
         if (currentUserResponse.data._id === featuredResponse.data._id) {
-          setIsFeaturedUserCurrentUser(true); // Set flag to disable buttons if they are the same
+          setIsFeaturedUserCurrentUser(true);
         }
 
       } catch (error) {
         if (error.response?.status === 401) {
-          setShowLoginError(true); // Set the error state to show login message if unauthorized
+          setShowLoginError(true);
         } else {
           console.error('Error fetching data:', error);
         }
@@ -120,7 +116,7 @@ const Featured = ({ updateHeaderPoints }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.post('http://localhost:4000/api/update-points', {
-          userId: currentUser._id, // Use the logged-in user's ID
+          userId: currentUser._id,
           action: verification.action,
         }, {
           headers: { Authorization: `Bearer ${token}` },
@@ -130,7 +126,9 @@ const Featured = ({ updateHeaderPoints }) => {
         setCurrentUser(updatedUser);
         setCheckboxes(prev => ({ ...prev, [verification.action]: true }));
 
-        updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
+        if (updateHeaderPoints) {
+          updateHeaderPoints(updatedUser.dailyPoints, updatedUser.totalPoints);
+        }
       } catch (error) {
         console.error('Error updating points:', error);
       }
@@ -139,17 +137,16 @@ const Featured = ({ updateHeaderPoints }) => {
   };
 
   const handleLoginRedirect = () => {
-    navigate('/login'); // Navigate to login page when user clicks the button
+    navigate('/login');
   };
 
   if (loading) return <p>Loading...</p>;
   if (!featuredUser) return <p>No featured user found</p>;
 
-  const videoId = extractVideoId(featuredUser.featuredVideoId); // Extract video ID here
+  const videoId = extractVideoId(featuredUser.featuredVideoId);
 
   return (
     <div className="featured-container">
-      {/* Display login error message with redirect option */}
       {showLoginError && (
         <div className="error-banner">
           <p>You must be logged in to view this page.</p>
@@ -173,12 +170,10 @@ const Featured = ({ updateHeaderPoints }) => {
         </div>
 
         <div className="middle-section">
-          {/* Conditionally render the title */}
           <h2 className="title">
             {isFeaturedUserCurrentUser ? "You are the Featured Creator" : "Featured Creator"}
           </h2>
           <div className="video-container">
-            {/* Check if the user is the featured user and if they have a video linked */}
             {isFeaturedUserCurrentUser && !videoId ? (
               <div className="no-video-message">
                 <p>Please link a video to display here.</p>
@@ -187,7 +182,7 @@ const Featured = ({ updateHeaderPoints }) => {
               videoId && (
                 <YouTube
                   videoId={videoId}
-                  opts={{ height: '500', width: '100%' }} // Same styling as ContentArea
+                  opts={{ height: '500', width: '100%' }}
                 />
               )
             )}
@@ -201,7 +196,7 @@ const Featured = ({ updateHeaderPoints }) => {
               <button
                 className={`button buttonLike ${checkboxes.like ? 'buttonLiked' : ''}`}
                 onClick={() => handleActionClick('like')}
-                disabled={checkboxes.like || isFeaturedUserCurrentUser} // Disable if current user is the featured user
+                disabled={checkboxes.like || isFeaturedUserCurrentUser}
               >
                 <ThumbUpAltOutlinedIcon style={{ marginRight: '10px',}} />
                 {checkboxes.like ? 'Liked' : 'Like'}
@@ -209,14 +204,14 @@ const Featured = ({ updateHeaderPoints }) => {
               <button
                 className={`button buttonComment ${checkboxes.comment ? 'buttonCommented' : ''}`}
                 onClick={() => handleActionClick('comment')}
-                disabled={checkboxes.comment || isFeaturedUserCurrentUser} // Disable if current user is the featured user
+                disabled={checkboxes.comment || isFeaturedUserCurrentUser}
               >
                 {checkboxes.comment ? 'Commented' : 'Comment'}
               </button>
               <button
                 className={`button buttonSubscribe ${checkboxes.subscribe ? 'buttonSubscribed' : ''}`}
                 onClick={() => handleActionClick('subscribe')}
-                disabled={checkboxes.subscribe || isFeaturedUserCurrentUser} // Disable if current user is the featured user
+                disabled={checkboxes.subscribe || isFeaturedUserCurrentUser}
               >
                 {checkboxes.subscribe ? 'Subscribed' : 'Subscribe'}
               </button>

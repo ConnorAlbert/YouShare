@@ -34,7 +34,6 @@ const ContentArea = ({ updateHeaderPoints }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [awardedPoints, setAwardedPoints] = useState([false, false, false, false]); // For tracking points at 25%, 50%, 75%, and 100%
-  const playerRef = useRef(null);
   const [lastWatchedTime, setLastWatchedTime] = useState(0); // Track last valid watched time
   const [playerInstance, setPlayerInstance] = useState(null);
 
@@ -187,7 +186,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
     setVerification({ action: '', isVisible: false });
   };
 
-  if (loading) return <p></p>;
+  if (loading) return <p>Loading...</p>;
   if (!featuredUser) return <p>No featured user found</p>;
 
   const videoId = extractVideoId(featuredUser.featuredVideoId);

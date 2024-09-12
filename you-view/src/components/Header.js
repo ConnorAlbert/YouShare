@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SidebarContent from './SidebarContent';
 import HeaderContent from '../components/HeaderContent';
 import axios from 'axios';
@@ -18,7 +18,7 @@ const Header = ({ handleSidebarToggle, updatedPoints }) => {
   };
 
   // Fetch current logged-in user's data from the backend
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
       const response = await axios.get('http://localhost:4000/api/current-user', {
@@ -34,7 +34,7 @@ const Header = ({ handleSidebarToggle, updatedPoints }) => {
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
-  };
+  }, []); // Empty dependency array to ensure fetchUserData is only created once
 
   useEffect(() => {
     fetchUserData(); // Fetch data initially when component mounts
@@ -45,7 +45,7 @@ const Header = ({ handleSidebarToggle, updatedPoints }) => {
     }, 10000); // Poll every 10 seconds
 
     return () => clearInterval(intervalId); // Clean up the interval on component unmount
-  }, []);
+  }, [fetchUserData]); // Include fetchUserData in dependency array
 
   // Update points when "Yes" is confirmed from the featured page
   useEffect(() => {
