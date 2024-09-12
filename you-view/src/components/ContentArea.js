@@ -187,7 +187,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
     setVerification({ action: '', isVisible: false });
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p></p>;
   if (!featuredUser) return <p>No featured user found</p>;
 
   const videoId = extractVideoId(featuredUser.featuredVideoId);

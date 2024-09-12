@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import lockImage from '../assets/Images/Lock.png';
-import GoogleButton from 'react-google-button'; // Import here
 
-const LoginForm = ({ login, loginLoading, onLoginSuccess, onSignupClick, googleLogin }) => {
+
+const LoginForm = ({ login, loginLoading, onLoginSuccess, onSignupClick}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -67,9 +67,7 @@ const LoginForm = ({ login, loginLoading, onLoginSuccess, onSignupClick, googleL
       <button className="button signupbutton" onClick={onSignupClick}>
         Sign Up
       </button>
-      <div className='google'>
-        
-      </div>
+      
     </>
   );
 };
@@ -79,7 +77,6 @@ LoginForm.propTypes = {
   loginLoading: PropTypes.bool.isRequired,
   onLoginSuccess: PropTypes.func.isRequired,
   onSignupClick: PropTypes.func.isRequired,
-  googleLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
