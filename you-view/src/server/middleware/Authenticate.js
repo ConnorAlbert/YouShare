@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models'); // Ensure correct path to your User model
+const User = require('../models'); // Ensure this path is correct for your User model
+
+// Load environment variables
+require('dotenv').config();
 
 const authenticate = async (req, res, next) => {
   try {
@@ -9,7 +12,12 @@ const authenticate = async (req, res, next) => {
       return res.status(401).json({ message: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, 'test12345test'); // Replace with your actual JWT secret
+    const secretKey = process.env.JWT_SECRET; // Use environment variable for secret key
+    if (!secretKey) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+
+    const decoded = jwt.verify(token, secretKey);
     console.log('Decoded Token:', decoded);
 
     const user = await User.findById(decoded.id);
@@ -21,7 +29,7 @@ const authenticate = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Error in authentication middleware:', error);
-    res.status(401).json({ message: 'Invalid token', error });
+    res.status(401).json({ message: 'Invalid token', error: error.message });
   }
 };
 

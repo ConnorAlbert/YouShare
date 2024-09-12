@@ -7,14 +7,16 @@ const resolvers = {
   Query: {
     getUser: async (parent, args) => {
       const { username } = args;
-      return User.findOne({ username: username.toLowerCase() });
+      const user = await User.findOne({ username: username.toLowerCase() });
+      return user ? { ...user._doc, id: user._id.toString() } : null;
     },
     getAllUsers: async () => {
-      return User.find();
+      const users = await User.find();
+      return users.map(user => ({ ...user._doc, id: user._id.toString() }));
     },
     getFeaturedUser: async () => {
       const featuredUser = await User.findOne({ featuredVideoId: { $exists: true } });
-      return featuredUser;
+      return featuredUser ? { ...featuredUser._doc, id: featuredUser._id.toString() } : null;
     },
   },
   Mutation: {
@@ -30,7 +32,7 @@ const resolvers = {
 
       const newUser = new User({ username: normalizedUsername, email: normalizedEmail, password });
       await newUser.save();
-      return newUser;
+      return { ...newUser._doc, id: newUser._id.toString() };
     },
     login: async (parent, args) => {
       const { username, password } = args;
@@ -46,12 +48,11 @@ const resolvers = {
         const user = await User.findById(userId);
         if (!user) throw new Error('User not found');
 
-        // Increment daily and total points by 1 for each action
         user.dailyPoints += 1;
         user.totalPoints += 1;
 
         await user.save();
-        return user; // Return the updated user with current points
+        return { ...user._doc, id: user._id.toString() };
       } catch (error) {
         throw new Error('Error updating points: ' + error.message);
       }
@@ -61,7 +62,7 @@ const resolvers = {
 
 // Function to generate JWT token
 function generateToken(user) {
-  const token = jwt.sign({ id: user.id, username: user.username }, secretKey, {
+  const token = jwt.sign({ id: user._id.toString(), username: user.username }, secretKey, {
     expiresIn: '1h',
   });
   return token;
