@@ -37,7 +37,7 @@ const Actions = ({ addXp }) => {
     const fetchCurrentVideo = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:4000/api/current-featured-video', {
+        const response = await axios.get('https://youview-190cb1d0e6db.herokuapp.com/api/current-featured-video', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.data.videoId) {
@@ -58,7 +58,7 @@ const Actions = ({ addXp }) => {
       if (newVideoId) {
         try {
           const token = localStorage.getItem('token');
-          await axios.post('http://localhost:4000/api/update-featured-video', 
+          await axios.post('https://youview-190cb1d0e6db.herokuapp.com/api/update-featured-video', 
             { videoId: newVideoId }, 
             { headers: { Authorization: `Bearer ${token}` } }
           );

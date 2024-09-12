@@ -54,7 +54,6 @@ router.post('/update-featured-video', authenticate, async (req, res) => {
 router.get('/random-featured-user', authenticate, async (req, res) => {
   try {
     const currentUserId = req.user._id; // Retrieve current user ID from authentication middleware
-    console.log('Current User ID:', currentUserId);
 
     // Find users with a featured video that are not the current logged-in user
     const usersWithVideo = await User.find({

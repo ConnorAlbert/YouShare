@@ -25,7 +25,7 @@ const extractVideoId = (input) => {
   }
 };
 
-const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
+const Featured = ({ updateHeaderPoints }) => {
   const [checkboxes, setCheckboxes] = useState({ like: false, comment: false, subscribe: false });
   const [progressWidth, setProgressWidth] = useState(0);
   const [verification, setVerification] = useState({ action: '', isVisible: false });
@@ -36,7 +36,7 @@ const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
   const [isFeaturedUserCurrentUser, setIsFeaturedUserCurrentUser] = useState(false);
   const [showLoginError, setShowLoginError] = useState(false);
   const navigate = useNavigate();
-
+  
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
@@ -49,11 +49,18 @@ const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
           return;
         }
 
-        const featuredResponse = await axios.get('http://localhost:4000/api/highest-daily-points-user', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        
+        const [featuredResponse, currentUserResponse] = await Promise.all([
+          axios.get('https://youview-190cb1d0e6db.herokuapp.com/api/highest-daily-points-user', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get('https://youview-190cb1d0e6db.herokuapp.com/api/current-user', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
         setFeaturedUser(featuredResponse.data);
+        setCurrentUser(currentUserResponse.data);
+
         if (featuredResponse.data.featuredVideoId) {
           const videoId = extractVideoId(featuredResponse.data.featuredVideoId);
           if (videoId) {
@@ -66,15 +73,10 @@ const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
           }
         }
 
-        const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCurrentUser(currentUserResponse.data);
-
         if (currentUserResponse.data._id === featuredResponse.data._id) {
           setIsFeaturedUserCurrentUser(true);
         }
-
+        
       } catch (error) {
         if (error.response?.status === 401) {
           setShowLoginError(true);
@@ -115,7 +117,7 @@ const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
     if (didComplete && verification.action) {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:4000/api/update-points', {
+        const response = await axios.post('https://youview-190cb1d0e6db.herokuapp.com/api/update-points', {
           userId: currentUser._id,
           action: verification.action,
         }, {
@@ -198,7 +200,7 @@ const Featured = ({ updateHeaderPoints }) => { // Ensure this is a prop
                 onClick={() => handleActionClick('like')}
                 disabled={checkboxes.like || isFeaturedUserCurrentUser}
               >
-                <ThumbUpAltOutlinedIcon style={{ marginRight: '10px',}} />
+                <ThumbUpAltOutlinedIcon style={{ marginRight: '10px' }} />
                 {checkboxes.like ? 'Liked' : 'Like'}
               </button>
               <button

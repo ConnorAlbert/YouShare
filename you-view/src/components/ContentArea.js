@@ -43,7 +43,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const featuredResponse = await axios.get('http://localhost:4000/api/random-featured-user', {
+      const featuredResponse = await axios.get('https://youview-190cb1d0e6db.herokuapp.com/api/random-featured-user', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFeaturedUser(featuredResponse.data);
@@ -62,7 +62,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
         console.error('No valid video ID found');
       }
 
-      const currentUserResponse = await axios.get('http://localhost:4000/api/current-user', {
+      const currentUserResponse = await axios.get('https://youview-190cb1d0e6db.herokuapp.com/api/current-user', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCurrentUser(currentUserResponse.data);
@@ -138,7 +138,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:4000/api/update-points',
+        'https://youview-190cb1d0e6db.herokuapp.com/api/update-points',
         { userId: currentUser._id, action: 'watch' }, // Assuming 'watch' is the action
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -171,7 +171,7 @@ const ContentArea = ({ updateHeaderPoints }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.post(
-          'http://localhost:4000/api/update-points',
+          'https://youview-190cb1d0e6db.herokuapp.com/api/update-points',
           { userId: currentUser._id, action: verification.action },
           { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -9,7 +9,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { UserProvider } from './server/UserContext'; // Import UserProvider
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql', // Replace with your GraphQL endpoint
+  uri: 'https://youview-190cb1d0e6db.herokuapp.com/graphql', // Replace with your GraphQL endpoint
   cache: new InMemoryCache(),
 });
 

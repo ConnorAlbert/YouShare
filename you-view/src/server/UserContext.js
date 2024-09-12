@@ -28,7 +28,7 @@ export const UserProvider = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:4000/api/current-user', {
+        const response = await axios.get('https://youview-190cb1d0e6db.herokuapp.com/api/current-user', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
