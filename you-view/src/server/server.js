@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const authRoutes = require('./routes/auth');
+
 const userRoutes = require('./routes/UserRoutes'); // Ensure this path is correct
 const passport = require('passport');
 const session = require('express-session');
@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken'); // JWT import added
 const cron = require('node-cron'); // Import node-cron for scheduling tasks
 const User = require('./models'); // Import User model for updating daily points
 
-require('./strategies/google');
+
 
 async function startServer() {
   const app = express();
@@ -72,7 +72,7 @@ async function startServer() {
   app.use(passport.initialize());
 
   // Route setup
-  app.use('/api/auth', authRoutes);
+ 
   app.use('/api', userRoutes);
 
   // Apply Apollo Server middleware

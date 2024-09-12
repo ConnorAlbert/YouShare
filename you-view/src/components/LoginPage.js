@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
-// import GoogleButton from 'react-google-button'; // Commented out for now
 import LoginForm from './LoginForm';
 import SignupModal from './SignupModal';
 import '../styles/LoginPage.css';
@@ -41,14 +40,28 @@ const LoginPage = () => {
     navigate('/home');
   };
 
-  // const handleGoogleLogin = () => {
-  //   window.location.href = 'http://localhost:4000/api/auth/google';
-  // };
+  // Handler for test user login
+  const handleTestUserLogin = async () => {
+    try {
+      const { data } = await login({
+        variables: {
+          username: 'testuser',
+          password: 'userfortest',
+        },
+      });
+
+      if (data && data.login.token) {
+        handleLoginSuccess(data.login.token);
+      }
+    } catch (error) {
+      console.error('Error logging in as test user:', error);
+    }
+  };
 
   return (
     <div className="loginPage">
       <div className="header">
-      <img src={Logo} alt="Logo" className="logoImage" />
+        <img src={Logo} alt="Logo" className="logoImage" />
       </div>
       <div className="mainContent">
         <div className="formContainer">
@@ -57,8 +70,12 @@ const LoginPage = () => {
             loginLoading={loginLoading}
             onLoginSuccess={handleLoginSuccess}
             onSignupClick={() => setShowSignupModal(true)}
-            // googleLogin={handleGoogleLogin} // Commented out for now
           />
+
+          {/* Test user login button */}
+          <button className="login" onClick={handleTestUserLogin}>
+            Log in as Test User
+          </button>
         </div>
       </div>
       {showSignupModal && (
