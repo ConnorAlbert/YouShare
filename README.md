@@ -67,22 +67,26 @@
 
 
 
-### Built With
-* [JavaScript](https://devdocs.io/javascript/)
-* [React](https://reactjs.org/docs/getting-started.html)
-* [HTML](https://devdocs.io/html/)
-* [CSS](https://devdocs.io/css/)
-* [Axios](https://axios-http.com/docs/intro)
-* [Node.js](https://nodejs.org/en/docs/)
-* [Express](https://expressjs.com/)
-* [MongoDB](https://www.mongodb.com/docs/)
-* [Mongoose](https://mongoosejs.com/docs/)
-* [GraphQL](https://graphql.org/learn/)
-* [Apollo Client](https://www.apollographql.com/docs/react/)
-* [JWT (JSON Web Tokens)](https://jwt.io/introduction/)
-* [YouTube Data API](https://developers.google.com/youtube/v3)
-* [Material-UI](https://mui.com/)
-* [React Router](https://reactrouter.com/)
+### Frontend
+- [JavaScript](https://devdocs.io/javascript/)
+- [React](https://reactjs.org/docs/getting-started.html)
+- [HTML](https://devdocs.io/html/)
+- [CSS](https://devdocs.io/css/)
+- [Axios](https://axios-http.com/docs/intro)
+- [Material-UI](https://mui.com/)
+- [React Router](https://reactrouter.com/)
+
+### Backend
+- [Node.js](https://nodejs.org/en/docs/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/docs/)
+- [Mongoose](https://mongoosejs.com/docs/)
+- [GraphQL](https://graphql.org/learn/)
+- [Apollo Client](https://www.apollographql.com/docs/react/)
+- [JWT (JSON Web Tokens)](https://jwt.io/introduction/)
+
+### API Integration
+- [YouTube Data API](https://developers.google.com/youtube/v3)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
