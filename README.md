@@ -55,7 +55,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Main](https://github.com/user-attachments/assets/85a4906d-6f41-4c79-a1e2-540802616a2e)
+![Third](https://github.com/user-attachments/assets/2cfc31c0-04b5-4f82-9a98-14361e570351)
+
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
