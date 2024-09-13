@@ -136,7 +136,7 @@ Don't forget to give the project a star! Thanks again!
 
 Connor Albert - connoralbert23@hotmail.com
 
-Project Link: <a href="[https://f2p-game.netlify.app](https://youview-190cb1d0e6db.herokuapp.com/)">View Demo</a>
+Project Link: <a href="https://youview-190cb1d0e6db.herokuapp.com/">View Demo</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
