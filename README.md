@@ -23,7 +23,7 @@
     <a href="https://github.com/ConnorAlbert/YouView"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="[https://f2p-game.netlify.app](https://youview-190cb1d0e6db.herokuapp.com/)">View Demo</a>
+    <a href="(https://youview-190cb1d0e6db.herokuapp.com/)">View Demo</a>
     ·
     <a href="https://github.com/ConnorAlbert/YouView/issues">Report Bug</a>
     ·
