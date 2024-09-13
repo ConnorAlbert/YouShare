@@ -6,28 +6,31 @@
 
 
 
-
-<!-- PROJECT LOGO -->
 <br />
-<div align="center">
-  <a href="https://github.com/ConnorAlbert/YouView">
-    <img src="public/myicon.ico" alt="Logo" width="80" height="80">
+<br />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/683ff958-ccc6-4c00-bf17-9061d0e8e73f" alt="logo-no-background (2)" />
+</p>
+
+
+
    
-  </a>
+ 
 
-<h1 align="center">YouView</h1>
-
+<br />
+<br />
   <p align="center">
-    YouView is a React-based web application that highlights featured creators and their videos, allowing users to engage through likes, comments, and subscriptions. The platform dynamically showcases the top creators based on daily points, encouraging interaction and competition. With YouView, users can discover trending videos, track their progress, and connect with their favorite content creators in a fun and interactive way.
-    <br />
-    <a href="https://github.com/ConnorAlbert/YouView"><strong>Explore the docs »</strong></a>
+    YouShare is a React-based web application that highlights featured creators and their videos, allowing users to engage through likes, comments, and subscriptions. The platform dynamically showcases the top creators based on daily points, encouraging interaction and competition. With YouShare, users can discover trending videos, track their progress, and connect with their favorite content creators in a fun and interactive way.
     <br />
     <br />
-    <a href="https://youview-190cb1d0e6db.herokuapp.com/">View Demo</a>
+    <a href="https://github.com/ConnorAlbert/YouShare"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://YouShare-190cb1d0e6db.herokuapp.com/">View Demo</a>
     ·
-    <a href="https://github.com/ConnorAlbert/YouView/issues">Report Bug</a>
+    <a href="https://github.com/ConnorAlbert/YouShare/issues">Report Bug</a>
     ·
-    <a href="https://github.com/ConnorAlbert/YouView/issues">Request Feature</a>
+    <a href="https://github.com/ConnorAlbert/YouShare/issues">Request Feature</a>
   </p>
 </div>
 
@@ -56,6 +59,7 @@
 ## About The Project
 
 ![Third](https://github.com/user-attachments/assets/2cfc31c0-04b5-4f82-9a98-14361e570351)
+![Fourth](https://github.com/user-attachments/assets/a9af5e12-7af4-4cf9-bdd7-7de2ba3b8241)
 
 
 
@@ -84,10 +88,15 @@
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-YouView allows users to engage with YouTube content by performing actions such as liking, commenting, and subscribing to videos from featured creators. Users can view a featured creator’s profile, watch their linked YouTube video, and earn points by completing specified actions. To get started, simply log in, explore the featured content, and participate in the available actions to interact with the YouTube videos.
+YouShare allows users to engage with YouTube content by performing actions such as liking, commenting, and subscribing to videos from featured creators. Users can view a featured creator’s profile, watch their linked YouTube video, and earn points by completing specified actions. To get started, simply log in, explore the featured content, and participate in the available actions to interact with the YouTube videos.
 <br/>
 <br/>
-![Screenshot_1](https://user-images.githubusercontent.com/92011318/224578579-7d149463-7451-47e0-aa5b-1b593bb36880.png)
+![Main](https://github.com/user-attachments/assets/f7858f22-c126-4c2d-86d4-439abda0889a)
+<br/> 
+
+
+![Second](https://github.com/user-attachments/assets/afcc384f-c53b-45cc-8dac-07a237feb2d3)
+
 
 <p float="left">
   
@@ -110,7 +119,7 @@ YouView allows users to engage with YouTube content by performing actions such a
 * [x] Point System
 * [x] Action Verification (Like, Comment, Subscribe)
 
-See the [open issues](https://github.com/ConnorAlbert/YouView/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/ConnorAlbert/YouShare/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -138,16 +147,16 @@ Don't forget to give the project a star! Thanks again!
 
 Connor Albert - connoralbert23@hotmail.com
 
-Project Link: <a href="https://youview-190cb1d0e6db.herokuapp.com/">View Demo</a>
+Project Link: <a href="https://YouShare-190cb1d0e6db.herokuapp.com/">View Demo</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/ConnorAlbert/YouView?style=for-the-badge
-[contributors-url]: https://github.com/ConnorAlbert/YouView/graphs/contributors
-[issues-shield]: https://img.shields.io/github/issues/ConnorAlbert/YouView?style=for-the-badge
-[issues-url]: https://github.com/ConnorAlbert/YouView/issues
+[contributors-shield]: https://img.shields.io/github/contributors/ConnorAlbert/YouShare?style=for-the-badge
+[contributors-url]: https://github.com/ConnorAlbert/YouShare/graphs/contributors
+[issues-shield]: https://img.shields.io/github/issues/ConnorAlbert/YouShare?style=for-the-badge
+[issues-url]: https://github.com/ConnorAlbert/YouShare/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/connoralbert/
  
