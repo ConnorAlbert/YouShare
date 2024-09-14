@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const cron = require('node-cron');
 const User = require('./models'); // Import User model
 const path = require('path');
+const axios = require('axios'); // Import axios to make HTTP requests
 
 async function startServer() {
   const app = express();
@@ -87,6 +88,21 @@ async function startServer() {
   // Handle React routing, return the main React app
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+  });
+
+  // Add a ping route to keep the app awake
+  app.get('/ping', (req, res) => {
+    res.send('Pong');
+  });
+
+  // Schedule a cron job to ping the server every 30 minutes from 12 PM to 4 AM UTC
+  cron.schedule('*/30 12-23,0-3 * * *', async () => {
+    try {
+      await axios.get('https://youview-190cb1d0e6db.herokuapp.com/ping');
+      console.log('Pinged the server to keep it awake.');
+    } catch (error) {
+      console.error('Error pinging the server:', error);
+    }
   });
 
   // Schedule a cron job to reset daily points every day at midnight
