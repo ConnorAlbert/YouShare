@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import LandingPageHeader from './LandingPageHeader';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -176,14 +176,33 @@ const BouncingArrow = styled(ArrowDownwardIcon)`
 `;
 
 const LandingPage = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
   const howItWorksSectionRef = useRef(null);
 
   const handleHowItWorksClick = () => {
     howItWorksSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Check if the user is logged in by looking for a token in localStorage
-  const isLoggedIn = !!localStorage.getItem('token');
+  // Function to check if the token is valid
+  const isTokenValid = () => {
+    const token = localStorage.getItem('token');
+    const expiration = localStorage.getItem('tokenExpiration'); // Get expiration time
+
+    if (token && expiration) {
+      const currentTime = new Date().getTime();
+      return currentTime < parseInt(expiration, 10); // Check if the current time is before the expiration time
+    }
+    return false;
+  };
+
+  // Function to handle the Get Started button click
+  const handleGetStartedClick = () => {
+    if (isTokenValid()) {
+      navigate('/home'); // Redirect to home page if token is valid
+    } else {
+      navigate('/login'); // Redirect to login page if token is not valid
+    }
+  };
 
   return (
     <div style={styles.landingPage}>
@@ -200,24 +219,17 @@ const LandingPage = () => {
             With youShare, seize control from elusive algorithms and put the power back in your hands.<br /> Here, your creative brilliance meets an audience
             of like-minded individuals hungry for content <br />just like yours. And the beauty of it all? You're in the driver's
             seat. The more content you explore, <br />the broader your reach becomes. Dive into a sea of creativity, and in return,
-            let your own work<br /> bask in the limelight. With youShare, ignite your influence. Start the content revolution today!.
+            let your own work<br /> bask in the limelight. With youShare, ignite your influence. Start the content revolution today! .
           </p>
         </div>
         <div style={styles.imageContainer}>
           <img src={Image} alt="computer" style={styles.image} />
           <div style={styles.buttonUnderImage}>
             <Box style={styles.shadowBox}>
-              <Link
-                to={isLoggedIn ? '/home' : '/login'}  // Redirect based on login status
-                style={{
-                  ...styles.link,
-                }}
-              >
-                <Button variant="contained" style={styles.button}>
-                  Get Started
-                  <ArrowForwardIcon style={styles.arrowIcon} />
-                </Button>
-              </Link>
+              <Button variant="contained" style={styles.button} onClick={handleGetStartedClick}>
+                Get Started
+                <ArrowForwardIcon style={styles.arrowIcon} />
+              </Button>
             </Box>
           </div>
         </div>
