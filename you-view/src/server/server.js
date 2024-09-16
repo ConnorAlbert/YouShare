@@ -96,7 +96,7 @@ async function startServer() {
   });
 
   // Schedule a cron job to ping the server every 30 minutes from 12 PM to 4 AM UTC
-  cron.schedule('*/30 12-23,0-3 * * *', async () => {
+  cron.schedule('*/29 * * * *', async () => {
     try {
       await axios.get('https://youview-190cb1d0e6db.herokuapp.com/ping');
       console.log('Pinged the server to keep it awake.');
