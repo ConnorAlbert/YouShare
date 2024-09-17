@@ -65,17 +65,17 @@ const LoginPage = () => {
       </div>
       <div className="mainContent">
         <div className="formContainer">
+          {/* Test user login button */}
+          <button className="login" onClick={handleTestUserLogin}>
+            Log in as Test User
+          </button>
+
           <LoginForm
             login={login}
             loginLoading={loginLoading}
             onLoginSuccess={handleLoginSuccess}
             onSignupClick={() => setShowSignupModal(true)}
           />
-
-          {/* Test user login button */}
-          <button className="login" onClick={handleTestUserLogin}>
-            Log in as Test User
-          </button>
         </div>
       </div>
       {showSignupModal && (

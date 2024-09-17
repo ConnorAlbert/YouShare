@@ -6,6 +6,22 @@ html, body {
   caret-color: transparent; /* Hide cursor globally by default */
 }
 
+.login {
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background-color: #242f40;
+  margin-left: 25%;
+}
+
+.login:hover {
+  background-color: #1e1d80;
+}
+
 .loginPage {
   display: flex;
   flex-direction: column;
