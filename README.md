@@ -161,7 +161,7 @@ Project Link: <a href="https://YouShare-190cb1d0e6db.herokuapp.com/">View Demo</
 [contributors-url]: https://github.com/ConnorAlbert/YouShare/graphs/contributors
 [issues-shield]: https://img.shields.io/github/issues/ConnorAlbert/YouShare?style=for-the-badge
 [issues-url]: https://github.com/ConnorAlbert/YouShare/issues
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555 
 [linkedin-url]: https://www.linkedin.com/in/connoralbert/
  
 
