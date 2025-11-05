@@ -6,13 +6,6 @@
 
 
 
-<br />
-<br />
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/683ff958-ccc6-4c00-bf17-9061d0e8e73f" alt="logo-no-background (2)" />
-</p>
-
-
 
    
  
