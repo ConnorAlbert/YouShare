@@ -19,7 +19,7 @@
     <a href="https://github.com/ConnorAlbert/YouShare"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://YouShare-190cb1d0e6db.herokuapp.com/">View Demo</a>
+    <a href="https://youview-190cb1d0e6db.herokuapp.com/">View Demo</a>
     ·
     <a href="https://github.com/ConnorAlbert/YouShare/issues">Report Bug</a>
     ·
